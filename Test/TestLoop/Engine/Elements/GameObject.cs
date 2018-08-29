@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace TestLoop
 {
-    public class GameObject
+    public abstract class GameObject
     {
         // active flag
         public bool Active = true;
@@ -20,7 +20,7 @@ namespace TestLoop
         }
 
         // positioning 
-        public Vector3 Position;
+        public Vector2 Position = new Vector2();
 
         // size related
         public short Width;
@@ -29,5 +29,9 @@ namespace TestLoop
         // texture
         public int textureId;
         public string assetName;
+
+        public abstract void Initialize();
+        public abstract Rectangle GetDrawingRectangle();
+
     }
 }

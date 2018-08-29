@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace TestLoop
@@ -9,9 +8,10 @@ namespace TestLoop
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        
+        public GraphicsDeviceManager graphics;
+
+        Player player;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -26,24 +26,23 @@ namespace TestLoop
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            GraphicsUtility.Initialize(this);
 
             base.Initialize();
+
+            player = new Player();
+            player.Initialize();
         }
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent()
+        /* protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            
-            // TODO: use this.Content to load your game content here
-            
-
+            // replaced by lazy loading
         }
+        */
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -51,7 +50,7 @@ namespace TestLoop
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+
         }
 
         /// <summary>
@@ -61,10 +60,14 @@ namespace TestLoop
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            KeyboardState kstate = Keyboard.GetState();
+            GamePadState gstate = GamePad.GetState(PlayerIndex.One);
+
+            if (gstate.Buttons.Back == ButtonState.Pressed || kstate.IsKeyDown(Keys.Escape))
                 Exit();
 
             // TODO: Add your update logic here
+            player.ProcessUserInput(kstate, gstate);
 
             base.Update(gameTime);
         }
@@ -75,10 +78,7 @@ namespace TestLoop
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
-
-            // TODO: Add your drawing code here
-
+            GraphicsUtility.Draw();
             base.Draw(gameTime);
         }
     }

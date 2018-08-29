@@ -27,7 +27,6 @@ namespace TestLoop
         Direction Direction // degrees
         {
             get;
-            set;
         }
 
         float Velocity
