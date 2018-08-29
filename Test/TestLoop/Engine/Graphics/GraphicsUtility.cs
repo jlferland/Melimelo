@@ -22,11 +22,18 @@ namespace TestLoop
             spriteBatch = new SpriteBatch(CurrentGame.GraphicsDevice);
         }
 
-        public static int LoadTexture(string assetName, GameObject gameObject)
+        public static int LoadTexture(string assetName)
         {
             int retr = TextureCollection.Count();
             TextureCollection.Add(CurrentGame.Content.Load<Texture2D>(assetName));
             return retr;            
+        }
+
+        public static int AddTexture(Texture2D asset)
+        {
+            int retr = TextureCollection.Count();
+            TextureCollection.Add(asset);
+            return retr;
         }
 
         public static void Draw()
@@ -38,11 +45,22 @@ namespace TestLoop
             foreach (GameObject obj in VisibleGameObjects)
             {
 #pragma warning disable CS0618 // Type or member is obsolete
-                spriteBatch.Draw(texture: TextureCollection[obj.textureId], position: obj.Position, sourceRectangle: obj.GetDrawingRectangle());
+                if (obj.GetDrawingRectangle() == Rectangle.Empty)
+                    spriteBatch.Draw(texture: TextureCollection[obj.textureId], position: obj.Position);
+                else
+                    spriteBatch.Draw(texture: TextureCollection[obj.textureId], position: obj.Position, sourceRectangle: obj.GetDrawingRectangle());
 #pragma warning restore CS0618 // Type or member is obsolete
             }
 
             spriteBatch.End();
+        }
+
+        public static GraphicsDevice CurrentGraphicsDevice
+        {
+            get
+            {
+                return CurrentGame.GraphicsDevice;
+            }
         }
     }
 }

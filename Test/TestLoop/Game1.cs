@@ -11,6 +11,7 @@ namespace TestLoop
         public GraphicsDeviceManager graphics;
 
         Player player;
+        Tile tile;
 
         public Game1()
         {
@@ -32,6 +33,9 @@ namespace TestLoop
 
             player = new Player();
             player.Initialize();
+
+            tile = new Tile();
+            tile.Initialize();
         }
 
         /// <summary>
@@ -50,7 +54,6 @@ namespace TestLoop
         /// </summary>
         protected override void UnloadContent()
         {
-
         }
 
         /// <summary>

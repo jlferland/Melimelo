@@ -1,6 +1,17 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Test",
+    "\\Test\\TestLoop",
+    "\\Test\\TestLoop\\Content",
+    "\\Test\\TestLoop\\Content\\bin",
+    "\\Test\\TestLoop\\Content\\bin\\DesktopGL",
+    "\\Test\\TestLoop\\Content\\bin\\DesktopGL\\Sprites",
+    "\\Test\\TestLoop\\Content\\Sprites",
+    "\\Test\\TestLoop\\Engine",
+    "\\Test\\TestLoop\\Engine\\Elements",
+    "\\Test\\TestLoop\\Engine\\Graphics",
+    "\\Test\\TestLoop\\GameObjects"
   ],
   "PreviewInSolutionExplorer": false
 }

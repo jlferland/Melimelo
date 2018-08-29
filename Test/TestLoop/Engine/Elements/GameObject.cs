@@ -32,6 +32,5 @@ namespace TestLoop
 
         public abstract void Initialize();
         public abstract Rectangle GetDrawingRectangle();
-
     }
 }

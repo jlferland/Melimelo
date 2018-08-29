@@ -56,8 +56,8 @@ namespace TestLoop
             {
                 // texture related
                 assetName = "Sprites\\Game Boy GBC - Final Fantasy Adventure - Sumo";
-                textureId = GraphicsUtility.LoadTexture(assetName, this);
-                spriteSheet = new SpriteSheetHandler(this, 4, 0, 10, 13);
+                textureId = GraphicsUtility.LoadTexture(assetName);
+                spriteSheet = new SpriteSheetHandler(textureId, 4, 0, 10, 13, Width, Height);
                 GraphicsUtility.VisibleGameObjects.Add(this);
             }
 

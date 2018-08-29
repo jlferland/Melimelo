@@ -8,22 +8,6 @@ namespace TestLoop
 {
     interface IMobile
     {
-        /* 
-        // movement related
-        public short Direction = TestLoop.Direction.EAST; // 360 degrees
-        public float Velocity = 0;
-        public float Acceleration = 0;
-
-        public bool Stopped
-        {
-            get { return Velocity == 0; }
-        }
-
-        // gravity related
-        public float Weight;
-        public short GravityAffectedPercentage = 0;
-        */
-
         Direction Direction // degrees
         {
             get;

@@ -12,11 +12,13 @@ namespace TestLoop
         private List<Rectangle> SpriteFrames = new List<Rectangle>();
         private int maxFrame;
         private int currentFrame;
+        private int textureId;
 
-        public SpriteSheetHandler(GameObject obj, int startOffsetX, int startOffsetY, int offsetX, int offsetY)
+        public SpriteSheetHandler(int objTextureId, int startOffsetX, int startOffsetY, int offsetX, int offsetY, int width, int height)
         {
-            int imageHeight = GraphicsUtility.TextureCollection[obj.textureId].Height;
-            int imageWidth = GraphicsUtility.TextureCollection[obj.textureId].Width;
+            textureId = objTextureId;
+            int imageHeight = GraphicsUtility.TextureCollection[textureId].Height;
+            int imageWidth = GraphicsUtility.TextureCollection[textureId].Width;
             int currentRow = startOffsetY;
             int currentColumn = startOffsetX;
 
@@ -24,16 +26,16 @@ namespace TestLoop
             {
                 if (currentColumn > imageWidth)
                 {
-                    currentRow += obj.Height + offsetY + startOffsetY;
+                    currentRow += height + offsetY + startOffsetY;
                     currentColumn = startOffsetX;
                 }
 
                 if (currentRow > imageHeight)
                     break;
 
-                SpriteFrames.Add(new Rectangle(currentColumn, currentRow, obj.Width, obj.Height));
+                SpriteFrames.Add(new Rectangle(currentColumn, currentRow, width, height));
 
-                currentColumn += obj.Width + offsetX + startOffsetX;
+                currentColumn += width + offsetX + startOffsetX;
             }
             maxFrame = SpriteFrames.Count - 1;
         }
@@ -51,9 +53,35 @@ namespace TestLoop
             get { return currentFrame; }
         }
 
+        public Rectangle GetFrameRectangle(int id)
+        {
+            if (id < 0)
+                id = 0;
+            else if (id > SpriteFrames.Count - 1)
+                id = maxFrame;
+
+            return SpriteFrames[id];
+        }
+
         public Rectangle getCurrentFrameRectangle()
         {
             return SpriteFrames[currentFrame];
+        }
+
+        public int Count
+        {
+            get
+            {
+                return SpriteFrames.Count;
+            }
+        }
+
+        public int TextureId
+        {
+            get
+            {
+                return textureId;
+            }
         }
     }
 }
