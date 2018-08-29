@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs/Melimelo/v15
+/Test/TestLoop/.vs/TestLoop/v15
+/Test/TestLoop/bin/DesktopGL/AnyCPU/Debug
+/Test/TestLoop/obj/Debug
