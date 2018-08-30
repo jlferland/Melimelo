@@ -3,15 +3,14 @@
     "",
     "\\Test",
     "\\Test\\TestLoop",
-    "\\Test\\TestLoop\\Content",
-    "\\Test\\TestLoop\\Content\\bin",
-    "\\Test\\TestLoop\\Content\\bin\\DesktopGL",
-    "\\Test\\TestLoop\\Content\\bin\\DesktopGL\\Sprites",
-    "\\Test\\TestLoop\\Content\\Sprites",
-    "\\Test\\TestLoop\\Engine",
-    "\\Test\\TestLoop\\Engine\\Elements",
-    "\\Test\\TestLoop\\Engine\\Graphics",
-    "\\Test\\TestLoop\\GameObjects"
+    "\\Test\\TestLoop\\bin",
+    "\\Test\\TestLoop\\bin\\DesktopGL",
+    "\\Test\\TestLoop\\bin\\DesktopGL\\AnyCPU",
+    "\\Test\\TestLoop\\Content\\obj",
+    "\\Test\\TestLoop\\Content\\obj\\DesktopGL",
+    "\\Test\\TestLoop\\Content\\obj\\DesktopGL\\Sprites",
+    "\\Test\\TestLoop\\obj",
+    "\\Test\\TestLoop\\obj\\Release"
   ],
   "PreviewInSolutionExplorer": false
 }

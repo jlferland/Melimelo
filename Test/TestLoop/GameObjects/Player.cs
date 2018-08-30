@@ -38,13 +38,16 @@ namespace TestLoop
         {
             Active = true;
             Visible = true;
+            LayerIndex = 1;
 
             ScreenPosition.X = 1;
-            ScreenPosition.Y = 1;
+            ScreenPosition.Y = 10;
 
             Height = 16;
             Width = 16;
 
+            PositionRectangle = new Rectangle(Convert.ToInt32(ScreenPosition.X), Convert.ToInt32(ScreenPosition.Y), Width, Height);
+            
             Direction.Value = Direction.EAST;
             Velocity = 0;
             Acceleration = 0;
@@ -58,7 +61,7 @@ namespace TestLoop
                 assetName = "Sprites\\Game Boy GBC - Final Fantasy Adventure - Sumo";
                 textureId = GraphicsUtility.LoadTexture(assetName);
                 spriteSheet = new SpriteSheetHandler(textureId, 4, 0, 10, 13, Width, Height);
-                GraphicsUtility.VisibleGameObjects.Add(this);
+                GraphicsUtility.AddVisibleGameObjects(LayerIndex, this);
             }
 
             spriteSheet.CurrentFrame = 3;
@@ -83,11 +86,11 @@ namespace TestLoop
             Velocity += Acceleration;
             Acceleration = 0;
              
-            // apply friction
-            
+            // apply friction            
             if (Direction.Value == Direction.SOUTH)
             {
                 ScreenPosition.Y += Velocity;
+                PositionRectangle.Y = Convert.ToInt32(ScreenPosition.Y);
             }
         }
 

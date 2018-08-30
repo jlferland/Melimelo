@@ -29,6 +29,7 @@ namespace TestLoop
         {
             Active = true;
             Visible = true;
+            LayerIndex = 0;
 
             ScreenPosition.X = 0;
             ScreenPosition.Y = 100;
@@ -36,6 +37,8 @@ namespace TestLoop
             // final tile size (individual tiles are 16*16)
             Height = 32;
             Width = 48;
+
+            PositionRectangle = new Rectangle(Convert.ToInt32(ScreenPosition.X), Convert.ToInt32(ScreenPosition.Y), Width, Height);
 
             // Surface
             Friction = 0;
@@ -49,7 +52,6 @@ namespace TestLoop
                 assetName = "Sprites\\Game Boy GBC - Mega Man I Dr Wilys Revenge - Ice Mans Stage";
                 tempTextureId = GraphicsUtility.LoadTexture(assetName);
                 spriteSheet = new SpriteSheetHandler(tempTextureId, 0, 0, 0, 0, 16, 16);
-                GraphicsUtility.VisibleGameObjects.Add(this);
                 
                 // Tile helper 
                 TiledTextureRenderer renderer = new TiledTextureRenderer();
@@ -65,8 +67,7 @@ namespace TestLoop
 
                 textureId = renderer.RenderTexture(tiles, Width, Height);
 
-                GraphicsUtility.VisibleGameObjects.Add(this);
-
+                GraphicsUtility.AddVisibleGameObjects(LayerIndex, this);
             }
         }
 

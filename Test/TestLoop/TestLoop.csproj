@@ -45,12 +45,14 @@
     <Compile Include="Engine\Elements\ISurface.cs" />
     <Compile Include="Engine\Elements\IZoneEffect.cs" />
     <Compile Include="Engine\Environment\BackgroundInformation.cs" />
+    <Compile Include="Engine\Graphics\DrawingUtility.cs" />
     <Compile Include="Engine\Graphics\GraphicsUtility.cs" />
     <Compile Include="Engine\Graphics\Sprites\SpriteSheetHandler.cs" />
     <Compile Include="Engine\Graphics\Texture\TiledTextureRenderer.cs" />
     <Compile Include="Engine\Graphics\Texture\TiledTextureDescriptor.cs" />
     <Compile Include="Engine\Physics\GravityHandler.cs" />
     <Compile Include="Engine\Utilities\EventClock.cs" />
+    <Compile Include="Engine\Utilities\ExtensionMethods.cs" />
     <Compile Include="Engine\Utilities\InputHandler.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Engine\Collision\CollisionHandler.cs" />

@@ -18,10 +18,12 @@ namespace TestLoop
         {
             get { return true; }
         }
+        public int LayerIndex;
 
         // positioning 
         public Vector2 ScreenPosition = new Vector2();
         public Vector2 GameAreaPosition = new Vector2();
+        public Rectangle PositionRectangle = Rectangle.Empty;
 
         // size related
         public short Width;

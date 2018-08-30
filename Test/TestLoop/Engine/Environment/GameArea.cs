@@ -9,22 +9,26 @@ namespace TestLoop
 {
     public class GameArea
     {
+        public Vector2 ScreenPosition;
+        public int Width;
+        public int Height;
+        public int ViewportWidth;
+        public int ViewportHeight;
+        public Rectangle ViewportRectangle;
+
         private List<GameObject> registeredObjects = new List<GameObject>();
         private List<GameObject> activeObjects = new List<GameObject>();
 
-        private Vector2 ScreenPosition;
-        private int Width;
-        private int Height;
-        private int ViewportWidth;
-        private int ViewportHeight;
-
-
+        public BackgroundInformation Background { get; } 
 
         public GameArea(int screenPositionX, int screenPositionY, int viewportWidth, int viewportHeight)
         {
             ScreenPosition = new Vector2(screenPositionX, screenPositionY);
             ViewportHeight = viewportHeight;
             ViewportWidth = viewportWidth;
+
+            Background = new BackgroundInformation(this);
+            ViewportRectangle = new Rectangle(screenPositionX, screenPositionY, ViewportWidth, ViewportHeight);
         }
 
         public void AddGameObject(GameObject newObject)
