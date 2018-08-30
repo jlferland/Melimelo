@@ -39,8 +39,8 @@ namespace TestLoop
             Active = true;
             Visible = true;
 
-            Position.X = 1;
-            Position.Y = 1;
+            ScreenPosition.X = 1;
+            ScreenPosition.Y = 1;
 
             Height = 16;
             Width = 16;
@@ -87,7 +87,7 @@ namespace TestLoop
             
             if (Direction.Value == Direction.SOUTH)
             {
-                Position.Y += Velocity;
+                ScreenPosition.Y += Velocity;
             }
         }
 

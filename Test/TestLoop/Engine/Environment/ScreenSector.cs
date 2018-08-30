@@ -10,6 +10,7 @@ namespace TestLoop
     {
         public int Id;
         public List<GameObject> ObjectsInSector;
+        public bool Visible; 
 
         public ScreenSector(int ID)
         {

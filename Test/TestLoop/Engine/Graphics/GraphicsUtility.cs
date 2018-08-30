@@ -48,9 +48,9 @@ namespace TestLoop
             {
 #pragma warning disable CS0618 // Type or member is obsolete
                 if (obj.GetDrawingRectangle() == Rectangle.Empty)
-                    spriteBatch.Draw(texture: TextureCollection[obj.textureId], position: obj.Position);
+                    spriteBatch.Draw(texture: TextureCollection[obj.textureId], position: obj.ScreenPosition);
                 else
-                    spriteBatch.Draw(texture: TextureCollection[obj.textureId], position: obj.Position, sourceRectangle: obj.GetDrawingRectangle());
+                    spriteBatch.Draw(texture: TextureCollection[obj.textureId], position: obj.ScreenPosition, sourceRectangle: obj.GetDrawingRectangle());
 #pragma warning restore CS0618 // Type or member is obsolete
             }
 

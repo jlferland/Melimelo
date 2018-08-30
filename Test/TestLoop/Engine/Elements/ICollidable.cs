@@ -9,12 +9,6 @@ namespace TestLoop
 {
     public interface ICollidable
     {
-
-        /*
-         * public List<ScreenSector> CurrentSectors;
-         * public Rectangle currentObjectRectangle;
-        */
-
         List<ScreenSector> CurrentSectors
         {
             get;
@@ -26,5 +20,7 @@ namespace TestLoop
         }
 
         // TODO collision map
+
+
     }
 }

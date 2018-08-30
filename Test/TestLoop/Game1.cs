@@ -36,7 +36,8 @@ namespace TestLoop
         {
             GraphicsUtility.Initialize(this);
 
-            TestGameArea area = new TestGameArea();
+            TestGameArea area = new TestGameArea(0,0,200,200);
+
             env.AddGameArea(area);
         }
 

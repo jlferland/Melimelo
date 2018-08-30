@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestLoop
 {
-    public class ISurface
+    public interface ISurface
     {
         float Friction
         {

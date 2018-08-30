@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace TestLoop
 {
-    public class GravityEngine
+    public class GravityHandler
     {
         private List<IMobile> gravityAffectedObjects = new List<IMobile>();
         private Dictionary<IMobile, TimeSpan> objectStartTimeFalling = new Dictionary<IMobile, TimeSpan>();
@@ -15,7 +15,7 @@ namespace TestLoop
         public float gravityConstant;
         public Direction gravityDirection { get; } = new Direction();
 
-        public GravityEngine()
+        public GravityHandler()
         {
             gravityConstant = 0.49f; // Earth gravity scaled at .05
             gravityDirection.Value = Direction.SOUTH;

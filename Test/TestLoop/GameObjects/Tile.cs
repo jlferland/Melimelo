@@ -7,16 +7,18 @@ using Microsoft.Xna.Framework;
 
 namespace TestLoop
 {
-    public class Tile : GameObject, ICollidable
+    public class Tile : GameObject, ICollidable, ISurface
     {
         // collision related
         public List<ScreenSector> CurrentSectors { get; } = new List<ScreenSector>();
         public Rectangle CurrentObjectRectangle { get; } = new Rectangle();
+        public float Friction { get; set; }
+        public float Bounce { get; set; }
 
         // sprite helper
         private SpriteSheetHandler spriteSheet;
 
-        // public methods
+        // public methods 
         public override void Initialize()
         {
             // set object state
@@ -28,13 +30,17 @@ namespace TestLoop
             Active = true;
             Visible = true;
 
-            Position.X = 0;
-            Position.Y = 100;
+            ScreenPosition.X = 0;
+            ScreenPosition.Y = 100;
 
             // final tile size (individual tiles are 16*16)
             Height = 32;
             Width = 48;
-            
+
+            // Surface
+            Friction = 0;
+            Bounce = 0;
+
             if (assetName == null)
             {
                 int tempTextureId = 0;

@@ -8,12 +8,18 @@ namespace TestLoop
 {
     public class TestGameArea : GameArea
     {
-        private GravityEngine gravity;
+        private GravityHandler gravity;
         private Player player;
+
+        public TestGameArea(int screenPositionX, int screenPositionY, int viewportWidth, int viewportHeight) : 
+            base(screenPositionX, screenPositionY, viewportWidth, viewportHeight) 
+        {
+
+        }
 
         public override void Initialize()
         {
-            gravity = new GravityEngine();
+            gravity = new GravityHandler();
             player = new Player();
 
             AddGameObject(player);

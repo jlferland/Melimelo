@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestLoop
 {
-    class CollisionDetector
+    public class BackgroundInformation
     {
-
     }
 }

@@ -20,7 +20,8 @@ namespace TestLoop
         }
 
         // positioning 
-        public Vector2 Position = new Vector2();
+        public Vector2 ScreenPosition = new Vector2();
+        public Vector2 GameAreaPosition = new Vector2();
 
         // size related
         public short Width;
