@@ -14,6 +14,7 @@ namespace TestLoop
         private static Game CurrentGame;
         
         public static List<Texture2D> TextureCollection = new List<Texture2D>();
+        public static List<Texture2D> CompositeTextureCollection = new List<Texture2D>();
         public static List<GameObject> VisibleGameObjects = new List<GameObject>();
 
         public static void Initialize(Game game)
@@ -33,6 +34,7 @@ namespace TestLoop
         {
             int retr = TextureCollection.Count();
             TextureCollection.Add(asset);
+            CompositeTextureCollection.Add(asset);
             return retr;
         }
 
@@ -62,5 +64,16 @@ namespace TestLoop
                 return CurrentGame.GraphicsDevice;
             }
         }
+
+        public static void ClearUnmanagedContent()
+        {
+            // since we are creating textures but they arent handled in Mono's content
+            // manager, we need to dispose them at the end.            
+            foreach (Texture t in CompositeTextureCollection)
+            {
+                t.Dispose();
+            }
+        }
+
     }
 }

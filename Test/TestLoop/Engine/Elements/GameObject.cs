@@ -31,6 +31,11 @@ namespace TestLoop
         public string assetName;
 
         public abstract void Initialize();
-        public abstract Rectangle GetDrawingRectangle();
+        public abstract void Update();
+
+        public virtual Rectangle GetDrawingRectangle()
+        {
+            return Rectangle.Empty;
+        }
     }
 }

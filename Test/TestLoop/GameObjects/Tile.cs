@@ -64,10 +64,9 @@ namespace TestLoop
             }
         }
 
-        public override Rectangle GetDrawingRectangle()
+        public override void Update()
         {
-            return Rectangle.Empty;
-        }
 
+        }
     }
 }

@@ -48,7 +48,9 @@
     <Compile Include="Engine\Graphics\Sprites\SpriteSheetHandler.cs" />
     <Compile Include="Engine\Graphics\Texture\TiledTextureRenderer.cs" />
     <Compile Include="Engine\Graphics\Texture\TiledTextureDescriptor.cs" />
+    <Compile Include="Engine\Physics\GravityEngine.cs" />
     <Compile Include="Engine\Utilities\EventClock.cs" />
+    <Compile Include="Engine\Utilities\InputHandler.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Engine\Collision\CollisionDetector.cs" />
     <Compile Include="Engine\Elements\Direction.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="Engine\Elements\ICollidable.cs" />
     <Compile Include="Engine\Elements\IMobile.cs" />
     <Compile Include="GameObjects\Player.cs" />
+    <Compile Include="GameObjects\TestGameArea.cs" />
     <Compile Include="GameObjects\Tile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

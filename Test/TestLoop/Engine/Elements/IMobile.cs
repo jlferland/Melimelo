@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestLoop
 {
-    interface IMobile
+    public interface IMobile
     {
         Direction Direction // degrees
         {
@@ -43,5 +43,6 @@ namespace TestLoop
             set;
         }
 
+        void Move();
     }
 }

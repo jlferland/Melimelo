@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/JL/Source/Repos/Melimelo/Test/TestLoop/Content/Sprites/Game Boy GBC - Final Fantasy Adventure - Sumo.png</SourceFile>
-  <SourceTime>2018-08-28T20:42:05.1725063-04:00</SourceTime>
-  <DestFile>C:/Users/JL/Source/Repos/Melimelo/Test/TestLoop/Content/bin/DesktopGL/Sprites/Game Boy GBC - Final Fantasy Adventure - Sumo.xnb</DestFile>
-  <DestTime>2018-08-29T16:24:47.4014586-04:00</DestTime>
+  <SourceFile>C:/Users/JL/source/repos/Melimelo/Test/TestLoop/Content/Sprites/Game Boy GBC - Final Fantasy Adventure - Sumo.png</SourceFile>
+  <SourceTime>2018-08-30T10:06:07.5150849-04:00</SourceTime>
+  <DestFile>C:/Users/JL/source/repos/Melimelo/Test/TestLoop/Content/bin/DesktopGL/Sprites/Game Boy GBC - Final Fantasy Adventure - Sumo.xnb</DestFile>
+  <DestTime>2018-08-30T10:06:57.8778296-04:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

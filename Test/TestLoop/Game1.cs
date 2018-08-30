@@ -8,14 +8,12 @@ namespace TestLoop
     /// </summary>
     public class Game1 : Game
     {
-        public GraphicsDeviceManager graphics;
-
-        Player player;
-        Tile tile;
+        private GameEnvironment env;
 
         public Game1()
         {
-            graphics = new GraphicsDeviceManager(this);
+            new GraphicsDeviceManager(this);
+            env = new GameEnvironment(this);
             Content.RootDirectory = "Content";
         }
 
@@ -26,27 +24,21 @@ namespace TestLoop
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize()
-        {
-            GraphicsUtility.Initialize(this);
-
+        {  
             base.Initialize();
-
-            player = new Player();
-            player.Initialize();
-
-            tile = new Tile();
-            tile.Initialize();
         }
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        /* protected override void LoadContent()
+        protected override void LoadContent()
         {
-            // replaced by lazy loading
+            GraphicsUtility.Initialize(this);
+
+            TestGameArea area = new TestGameArea();
+            env.AddGameArea(area);
         }
-        */
 
         /// <summary>
         /// UnloadContent will be called once per game and is the place to unload
@@ -54,6 +46,7 @@ namespace TestLoop
         /// </summary>
         protected override void UnloadContent()
         {
+            env.ClearUnmanagedContent();
         }
 
         /// <summary>
@@ -63,14 +56,13 @@ namespace TestLoop
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            KeyboardState kstate = Keyboard.GetState();
-            GamePadState gstate = GamePad.GetState(PlayerIndex.One);
+            InputHandler.UpdateInputs();
 
-            if (gstate.Buttons.Back == ButtonState.Pressed || kstate.IsKeyDown(Keys.Escape))
+            if (InputHandler.CurrentC1State.Buttons.Back == ButtonState.Pressed || 
+                InputHandler.CurrentKState.IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
-            player.ProcessUserInput(kstate, gstate);
+            env.Update();
 
             base.Update(gameTime);
         }
@@ -82,6 +74,7 @@ namespace TestLoop
         protected override void Draw(GameTime gameTime)
         {
             GraphicsUtility.Draw();
+
             base.Draw(gameTime);
         }
     }

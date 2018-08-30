@@ -76,5 +76,29 @@ namespace TestLoop
             else if (kstate.IsKeyDown(Keys.D2))
                 spriteSheet.CurrentFrame--;
         }
+
+        public void Move()
+        {
+            // change speed
+            Velocity += Acceleration;
+            Acceleration = 0;
+             
+            // apply friction
+            
+            if (Direction.Value == Direction.SOUTH)
+            {
+                Position.Y += Velocity;
+            }
+        }
+
+        public override void Update()
+        {
+            // process input
+            ProcessUserInput(InputHandler.CurrentKState, InputHandler.CurrentC1State);
+
+            // move object
+            Move();
+        }
+
     }
 }
