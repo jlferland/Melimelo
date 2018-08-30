@@ -76,11 +76,12 @@ namespace TestLoop
                             onScreen = true;
 
                             // check if we need to clip 
+                            // game ares edge clip
                             Rectangle intersectRectangle = Rectangle.Intersect(gameAreaRec, obj.PositionRectangle);
 
-                            if (intersectRectangle.Width != obj.PositionRectangle.Width || 
-                                intersectRectangle.Height != obj.PositionRectangle.Height) 
-                            {                    
+                            if (intersectRectangle.Width != obj.PositionRectangle.Width ||
+                                intersectRectangle.Height != obj.PositionRectangle.Height)
+                            {
                                 clippingRectangle = new Rectangle(obj.GetDrawingRectangle().Location, obj.GetDrawingRectangle().Size);
                                 positionRectangle = new Rectangle(obj.PositionRectangle.Location, obj.PositionRectangle.Size);
 
@@ -106,6 +107,8 @@ namespace TestLoop
                                     }
                                 }
                             }
+
+                            // TODO : layer overlap clip
                         }
                         else if (!onScreen)
                             onScreen = gameAreaRec.Contains(obj.PositionRectangle);
