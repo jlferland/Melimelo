@@ -56,13 +56,12 @@ namespace TestLoop
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            InputHandler.UpdateInputs();
+            env.Update(gameTime);
 
+            // TODO: remove this eventually
             if (InputHandler.CurrentC1State.Buttons.Back == ButtonState.Pressed || 
                 InputHandler.CurrentKState.IsKeyDown(Keys.Escape))
                 Exit();
-
-            env.Update();
 
             base.Update(gameTime);
         }

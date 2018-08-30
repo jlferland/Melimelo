@@ -33,8 +33,11 @@ namespace TestLoop
             }
         }
 
-        public virtual void Update()
+        public virtual void Update(GameTime gameTime)
         {
+            EventClock.CurrentGameTime = gameTime;
+            InputHandler.UpdateInputs();
+
             for (int i = registeredGameArea.Count - 1; i >= 0; i--)
             {
                 registeredGameArea[i].Update();
