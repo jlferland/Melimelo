@@ -63,20 +63,52 @@ namespace TestLoop
             {
                 foreach (GameObject obj in visibleGameObjects[i])
                 {
-                    Rectangle clippingRectangle = Rectangle.Empty;
-                    Rectangle objectRectangle = obj.PositionRectangle;
                     bool onScreen = false;
+
+                    Rectangle clippingRectangle = obj.GetDrawingRectangle();
+                    Rectangle positionRectangle = Rectangle.Empty;
 
                     // check for viewport clipping or offscreen objects
                     foreach (Rectangle gameAreaRec in bufferedGameAreaRectangles)
                     {
-                        if (gameAreaRec.Intersects(objectRectangle))
+                        if (gameAreaRec.Intersects(obj.PositionRectangle))
                         {
-                            clippingRectangle = Rectangle.Intersect(gameAreaRec, objectRectangle);
                             onScreen = true;
+
+                            // check if we need to clip 
+                            Rectangle intersectRectangle = Rectangle.Intersect(gameAreaRec, obj.PositionRectangle);
+
+                            if (intersectRectangle.Width != obj.PositionRectangle.Width || 
+                                intersectRectangle.Height != obj.PositionRectangle.Height) 
+                            {                    
+                                clippingRectangle = new Rectangle(obj.GetDrawingRectangle().Location, obj.GetDrawingRectangle().Size);
+                                positionRectangle = new Rectangle(obj.PositionRectangle.Location, obj.PositionRectangle.Size);
+
+                                if (intersectRectangle.Width < obj.PositionRectangle.Width)
+                                {
+                                    clippingRectangle.Width = intersectRectangle.Width;
+                                    positionRectangle.Width = intersectRectangle.Width;
+
+                                    if (obj.PositionRectangle.X < gameAreaRec.X)
+                                    {
+                                        clippingRectangle.X += obj.PositionRectangle.Width - intersectRectangle.Width;
+                                    }
+                                }
+
+                                if (intersectRectangle.Height < obj.PositionRectangle.Height)
+                                {
+                                    clippingRectangle.Height = intersectRectangle.Height;
+                                    positionRectangle.Height = intersectRectangle.Height;
+
+                                    if (obj.PositionRectangle.Y < gameAreaRec.Y)
+                                    {
+                                        clippingRectangle.Y += obj.PositionRectangle.Height - intersectRectangle.Height;
+                                    }
+                                }
+                            }
                         }
                         else if (!onScreen)
-                            onScreen = gameAreaRec.Contains(objectRectangle);
+                            onScreen = gameAreaRec.Contains(obj.PositionRectangle);
                     }
 
                     // set visibility
@@ -85,13 +117,28 @@ namespace TestLoop
                     // draw if applicable
                     if (obj.Visible)
                     {
-                        if (obj.GetDrawingRectangle() == Rectangle.Empty)
+                        if (clippingRectangle == Rectangle.Empty)
                         {
-                            spriteBatch.Draw(texture: TextureCollection[obj.textureId], destinationRectangle: clippingRectangle);
+                            if (positionRectangle == Rectangle.Empty)
+                            {
+                                spriteBatch.Draw(texture: TextureCollection[obj.textureId], destinationRectangle: obj.PositionRectangle);
+                            }
+                            else
+                            {
+                                spriteBatch.Draw(texture: TextureCollection[obj.textureId], destinationRectangle: positionRectangle);
+                            }
+
                         }
                         else
                         {
-                            spriteBatch.Draw(texture: TextureCollection[obj.textureId], destinationRectangle: clippingRectangle, sourceRectangle: obj.GetDrawingRectangle());
+                            if (positionRectangle == Rectangle.Empty)
+                            {
+                                spriteBatch.Draw(texture: TextureCollection[obj.textureId], destinationRectangle: obj.PositionRectangle, sourceRectangle: clippingRectangle);
+                            }
+                            else
+                            {
+                                spriteBatch.Draw(texture: TextureCollection[obj.textureId], destinationRectangle: positionRectangle, sourceRectangle: clippingRectangle);
+                            }
                         }
                     }
                 }

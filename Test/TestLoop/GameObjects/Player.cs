@@ -40,8 +40,8 @@ namespace TestLoop
             Visible = true;
             LayerIndex = 1;
 
-            ScreenPosition.X = 1;
-            ScreenPosition.Y = 10;
+            ScreenPosition.X = -4;
+            ScreenPosition.Y = -10;
 
             Height = 16;
             Width = 16;

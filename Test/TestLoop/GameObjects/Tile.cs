@@ -31,7 +31,7 @@ namespace TestLoop
             Visible = true;
             LayerIndex = 0;
 
-            ScreenPosition.X = 0;
+            ScreenPosition.X = 16;
             ScreenPosition.Y = 100;
 
             // final tile size (individual tiles are 16*16)
