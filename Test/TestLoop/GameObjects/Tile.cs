@@ -11,9 +11,10 @@ namespace TestLoop
     {
         // collision related
         public List<ScreenSector> CurrentSectors { get; } = new List<ScreenSector>();
-        public Rectangle CurrentObjectRectangle { get; } = new Rectangle();
+        public Rectangle CurrentObjectRectangle { get { return PositionRectangle; } }
         public float Friction { get; set; }
         public float Bounce { get; set; }
+        public SurfaceTypes SurfaceType { get; set; }
 
         // sprite helper
         private SpriteSheetHandler spriteSheet;

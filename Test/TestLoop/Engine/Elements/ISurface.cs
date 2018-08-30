@@ -18,6 +18,12 @@ namespace TestLoop
         {
             get;
             set;
+        }        
+
+        SurfaceTypes SurfaceType
+        {
+            get;
+            set;
         }
     }
 }

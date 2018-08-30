@@ -22,7 +22,7 @@ namespace TestLoop
 
         // collision related
         public List<ScreenSector> CurrentSectors { get; } = new List<ScreenSector>();
-        public Rectangle CurrentObjectRectangle { get; } = new Rectangle();
+        public Rectangle CurrentObjectRectangle { get { return PositionRectangle; } }
 
         // sprite helper
         private SpriteSheetHandler spriteSheet;
