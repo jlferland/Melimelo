@@ -60,7 +60,7 @@ namespace TestLoop
 
             Direction.Value = Direction.NOVALUE;
             Velocity = 0;
-            MaximumVelocity = 4.5f;
+            MaximumVelocity = 8f;
             Acceleration = 0;
 
             Weight = 1;
@@ -95,15 +95,15 @@ namespace TestLoop
             {
                 spriteSheet.CurrentFrame = 3;
 
-                if (Acceleration == 0)
+                if (Velocity <= 0)
                 {
                     Acceleration = 0.2f;
                     Direction.Value = Direction.EAST;
                 }
                 else
                 {
-                    if (Direction.Value == Direction.EAST && Velocity > 0)
-                        Acceleration -= 0.2f;
+                    if (Direction.Value == Direction.WEST && Velocity > 0)
+                        Velocity -= 0.2f;
                     else
                     {
                         Acceleration += 0.2f;
@@ -115,7 +115,7 @@ namespace TestLoop
             {
                 spriteSheet.CurrentFrame = 1;
 
-                if (Acceleration == 0)
+                if (Velocity <= 0)
                 {
                     Acceleration = 0.2f;
                     Direction.Value = Direction.WEST;
@@ -123,19 +123,30 @@ namespace TestLoop
                 else
                 {
                     if (Direction.Value == Direction.EAST && Velocity > 0)
-                        Acceleration -= 0.2f;
+                        Velocity -= 0.2f;
                     else
                     {
                         Acceleration += 0.2f;
                         Direction.SteerTowardsValue(Direction.WEST);
+
                     }
                 }
             }
-            else if (kstate.IsKeyDown(Keys.Space))
+
+
+            if (kstate.IsKeyDown(Keys.Space))
             {
-                Direction.Value = Direction.NORTH;
-                if (Acceleration == 0)
-                    Acceleration = 1f;
+                if (Velocity <= 0)
+                {
+                    Direction.Value = Direction.NORTH;
+                    Acceleration = 0.2f;
+                }
+                else
+                {
+                    Direction.SteerTowardsValue(Direction.NORTH);
+                    Acceleration += 1f;
+                }
+
                 GravityHandler.AddGravityAffectedObject(this);
             }
         }
@@ -217,7 +228,11 @@ namespace TestLoop
 
                 }
                 if (direction == CollisionDirection.BOTTOM)
+                {
+                    // stopped by a surface
+                    Stopped = true;
                     Y = colliderBottomPoint;
+                }
             }
         }
     }

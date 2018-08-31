@@ -50,10 +50,21 @@ namespace TestLoop
                     int difference = tempValue - Value;
                     while (difference < -180) difference += 360;
                     while (difference > 180) difference -= 360;
-                    if (difference == 180)
-                        Value = NOVALUE;
-                    else 
-                        Value += difference / 10; // TODO : Isolate this 10 somewhere.
+                    if (difference > 90)
+                    {
+                        difference = (180 - difference);
+                    }
+                    else if (difference < -90)
+                    {
+                        difference = (180 + difference);
+                    }
+                    int diff = difference / 10;
+                    if (diff < 1 && diff > 0)
+                        diff = 1;
+                    else if (diff < 0 && diff > -1)
+                        diff = -1;
+
+                    Value += diff; // TODO : Isolate this 10 somewhere.
                 }
             }
         }

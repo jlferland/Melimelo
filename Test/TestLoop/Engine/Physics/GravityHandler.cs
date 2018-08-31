@@ -17,7 +17,7 @@ namespace TestLoop
 
         public GravityHandler()
         {
-            GravityConstant = 0.49f; // Earth gravity scaled at .05
+            GravityConstant = 9.8f; 
             GravityDirection.Value = Direction.SOUTH;
         }
 
@@ -27,10 +27,7 @@ namespace TestLoop
             {
                 GravityAffectedObjects.Add(obj);
 
-                if (EventClock.CurrentGameTime == null)
-                    objectStartTimeFalling.Add(obj, TimeSpan.Zero);
-                else
-                    objectStartTimeFalling.Add(obj, EventClock.CurrentGameTime.TotalGameTime);
+                objectStartTimeFalling.Add(obj, TimeSpan.Zero);
             }
         }
 
@@ -48,16 +45,34 @@ namespace TestLoop
         public void Apply()
         {
             foreach (IMobile mobileObj in GravityAffectedObjects)
-            {                
+            {
+                if (objectStartTimeFalling[mobileObj] == TimeSpan.Zero)
+                    objectStartTimeFalling[mobileObj] = EventClock.CurrentGameTime.TotalGameTime;
+
                 float elapsedTime = (float)EventClock.CurrentGameTime.TotalGameTime.Subtract(objectStartTimeFalling[mobileObj]).TotalSeconds;
-
-                mobileObj.Acceleration += (0.5f *
-                                           GravityConstant *
-                                           mobileObj.GravityAffectedFactor *
-                                           elapsedTime *
-                                           elapsedTime);
-
+               
                 mobileObj.Direction.SteerTowardsValue(GravityDirection.Value);
+
+                if (mobileObj.Direction.Value - GravityDirection.Value > 90 || mobileObj.Direction.Value - GravityDirection.Value < -90)
+                {
+                    mobileObj.Acceleration -= (0.5f *
+                           GravityConstant *
+                           mobileObj.GravityAffectedFactor *
+                           elapsedTime *
+                           elapsedTime);
+
+                    if (mobileObj.Velocity == 0)
+                        mobileObj.Direction.Value = GravityDirection.Value;
+                }
+                else
+                {
+                    mobileObj.Acceleration += (0.5f *
+                           GravityConstant *
+                           mobileObj.GravityAffectedFactor *
+                           elapsedTime *
+                           elapsedTime);
+                }
+
             }
         }
     }

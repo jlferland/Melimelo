@@ -51,7 +51,7 @@ namespace TestLoop
                                 int moverBottomPoint = objMover.CurrentObjectRectangle.Y + objMover.CurrentObjectRectangle.Height;
                                 int colliderBottomPoint = objCollider.CurrentObjectRectangle.Y + objCollider.CurrentObjectRectangle.Height;
 
-                                if (moverBottomPoint > objCollider.CurrentObjectRectangle.Y)
+                                if (moverBottomPoint > objCollider.CurrentObjectRectangle.Y && moverBottomPoint < colliderBottomPoint)
                                 {
                                     direction = CollisionDirection.TOP;
                                 }
