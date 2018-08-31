@@ -42,6 +42,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Engine\Collision\CollisionDirection.cs" />
     <Compile Include="Engine\Elements\ISurface.cs" />
     <Compile Include="Engine\Elements\IZoneEffect.cs" />
     <Compile Include="Engine\Elements\SurfaceTypes.cs" />

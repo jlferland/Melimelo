@@ -25,7 +25,7 @@ namespace TestLoop
             gravity = new GravityHandler();
             collision = new CollisionHandler(this);
 
-            player = new Player();
+            player = new Player(gravity);
             tile = new Tile();
 
             AddGameObject(player);
@@ -35,13 +35,18 @@ namespace TestLoop
 
             collision.AddCollidableObject(player);
             collision.AddCollidableObject(tile);            
+
+
         }
 
         public override void Update()
         {
+            // moving objects
             gravity.Apply();
-            collision.HandleCollisions();
             base.Update();
+
+            // handle collisions
+            collision.HandleCollisions();
         }
     }
 }

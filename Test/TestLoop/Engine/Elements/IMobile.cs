@@ -19,6 +19,12 @@ namespace TestLoop
             set;
         }
 
+        float MaximumVelocity
+        {
+            get;
+            set;
+        }
+
         float Acceleration
         {
             get;
@@ -28,6 +34,7 @@ namespace TestLoop
         bool Stopped
         {
             get;
+            set;
         }
 
 
@@ -43,6 +50,14 @@ namespace TestLoop
             set;
         }
 
+        GravityHandler GravityHandler
+        {
+            get;
+            set;
+        }
+
         void Move();
+
+        void HandleMobileCollision<T>(ICollidable collidedObject, CollisionDirection direction, params object[] extraParameters);
     }
 }

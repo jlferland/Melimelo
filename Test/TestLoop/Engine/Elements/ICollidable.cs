@@ -18,9 +18,5 @@ namespace TestLoop
         {
             get;
         }
-
-        // TODO collision map
-
-
     }
 }

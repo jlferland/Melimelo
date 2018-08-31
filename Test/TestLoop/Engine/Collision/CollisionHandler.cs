@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace TestLoop
 {
@@ -45,16 +46,25 @@ namespace TestLoop
                             if (objMover != objCollider && 
                                 objCollider.CurrentObjectRectangle.Intersects(objMover.CurrentObjectRectangle))
                             {
-                                mover.Velocity = 0;
+                                // detect collision direction
+                                CollisionDirection direction = CollisionDirection.NONE;
+                                int moverBottomPoint = objMover.CurrentObjectRectangle.Y + objMover.CurrentObjectRectangle.Height;
+                                int colliderBottomPoint = objCollider.CurrentObjectRectangle.Y + objCollider.CurrentObjectRectangle.Height;
 
-
-                                // surface handling
-                                if (typeof(ISurface).IsAssignableFrom(objCollider.GetType()))
+                                if (moverBottomPoint > objCollider.CurrentObjectRectangle.Y)
                                 {
-
+                                    direction = CollisionDirection.TOP;
+                                }
+                                else if (colliderBottomPoint > objMover.CurrentObjectRectangle.Y)
+                                {
+                                    direction = CollisionDirection.BOTTOM;
                                 }
 
-
+                                // handle collision on the mover
+                                if (typeof(ISurface).IsAssignableFrom(objCollider.GetType()))
+                                {
+                                    mover.HandleMobileCollision<ISurface>(objCollider, direction, moverBottomPoint, colliderBottomPoint);
+                                }
                             }
                         }
                     }

@@ -21,10 +21,22 @@ namespace TestLoop
         public int LayerIndex;
 
         // positioning 
-        public Vector2 ScreenPosition = new Vector2();
+        private Vector2 screenPosition = new Vector2();
+        public float X
+        {
+            get { return screenPosition.X; }
+            set { screenPosition.X = value; PositionRectangle.X = Convert.ToInt32(value); }
+        }
+        public float Y
+        {
+            get { return screenPosition.Y; }
+            set { screenPosition.Y = value; PositionRectangle.Y = Convert.ToInt32(value); }
+        }
+        
         public Vector2 GameAreaPosition = new Vector2();
-        public Rectangle PositionRectangle = Rectangle.Empty;
 
+        public Rectangle PositionRectangle = Rectangle.Empty;
+        
         // size related
         public short Width;
         public short Height;

@@ -9,23 +9,23 @@ namespace TestLoop
 {
     public class GravityHandler
     {
-        private List<IMobile> gravityAffectedObjects = new List<IMobile>();
         private Dictionary<IMobile, TimeSpan> objectStartTimeFalling = new Dictionary<IMobile, TimeSpan>();
 
-        public float gravityConstant;
-        public Direction gravityDirection { get; } = new Direction();
+        public float GravityConstant;
+        public Direction GravityDirection { get; } = new Direction();
+        public List<IMobile> GravityAffectedObjects = new List<IMobile>();
 
         public GravityHandler()
         {
-            gravityConstant = 0.49f; // Earth gravity scaled at .05
-            gravityDirection.Value = Direction.SOUTH;
+            GravityConstant = 0.49f; // Earth gravity scaled at .05
+            GravityDirection.Value = Direction.SOUTH;
         }
 
         public void AddGravityAffectedObject(IMobile obj)
         {
-            if (!gravityAffectedObjects.Contains(obj))
+            if (!GravityAffectedObjects.Contains(obj))
             {
-                gravityAffectedObjects.Add(obj);
+                GravityAffectedObjects.Add(obj);
 
                 if (EventClock.CurrentGameTime == null)
                     objectStartTimeFalling.Add(obj, TimeSpan.Zero);
@@ -34,19 +34,30 @@ namespace TestLoop
             }
         }
 
+        public void RemoveGravityAffectedObject(IMobile obj)
+        {
+            if (GravityAffectedObjects.Contains(obj))
+            {
+                GravityAffectedObjects.Remove(obj);
+
+                if (objectStartTimeFalling.ContainsKey(obj))
+                    objectStartTimeFalling.Remove(obj);
+            }
+        }
+
         public void Apply()
         {
-            foreach (IMobile mobileObj in gravityAffectedObjects)
-            {
-                float elapsedTime = (float)EventClock.CurrentGameTime.TotalGameTime.Subtract(objectStartTimeFalling[mobileObj]).TotalSeconds; 
+            foreach (IMobile mobileObj in GravityAffectedObjects)
+            {                
+                float elapsedTime = (float)EventClock.CurrentGameTime.TotalGameTime.Subtract(objectStartTimeFalling[mobileObj]).TotalSeconds;
 
-                mobileObj.Acceleration += (0.5f * 
-                                           gravityConstant * 
+                mobileObj.Acceleration += (0.5f *
+                                           GravityConstant *
                                            mobileObj.GravityAffectedFactor *
                                            elapsedTime *
                                            elapsedTime);
 
-                mobileObj.Direction.Value = gravityDirection.Value;
+                mobileObj.Direction.SteerTowardsValue(GravityDirection.Value);
             }
         }
     }

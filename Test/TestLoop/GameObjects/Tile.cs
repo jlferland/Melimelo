@@ -32,14 +32,14 @@ namespace TestLoop
             Visible = true;
             LayerIndex = 0;
 
-            ScreenPosition.X = 0;
-            ScreenPosition.Y = 100;
+            X = 0;
+            Y = 100;
 
             // final tile size (individual tiles are 16*16)
             Height = 32;
             Width = 48;
 
-            PositionRectangle = new Rectangle(Convert.ToInt32(ScreenPosition.X), Convert.ToInt32(ScreenPosition.Y), Width, Height);
+            PositionRectangle = new Rectangle(Convert.ToInt32(X), Convert.ToInt32(Y), Width, Height);
 
             // Surface
             Friction = 0;
