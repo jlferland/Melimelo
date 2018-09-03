@@ -9,20 +9,23 @@ namespace TestLoop
 {
     public class CollisionHandler
     {
-        private List<ICollidable> collidableObjects = new List<ICollidable>();
-        private ScreenSectors sectors;
+        private List<ICollidable> collidableObjects { get; } = new List<ICollidable>();
+        private ScreenSectors sectors { get; set; }
 
         public CollisionHandler(GameArea currentArea)
         {
             sectors = new ScreenSectors(currentArea, 8, ScreenSectors.SectorStyle.Matrix);
         }
 
-        public void AddCollidableObject(ICollidable obj)
+        public void AddCollidableObject(params ICollidable[] objects)
         {
-            if (!collidableObjects.Contains(obj))
+            foreach (ICollidable obj in objects)
             {
-                collidableObjects.Add(obj);
-                RefreshSector(obj);
+                if (!collidableObjects.Contains(obj))
+                {
+                    collidableObjects.Add(obj);
+                    RefreshSector(obj);
+                }
             }
         }
 

@@ -8,14 +8,13 @@ namespace TestLoop
 {
     public class ScreenSector
     {
-        public int Id;
-        public List<GameObject> ObjectsInSector;
+        public int Id { get; set; }
+        public List<GameObject> ObjectsInSector { get; } = new List<GameObject>();
         public bool Visible; 
 
         public ScreenSector(int ID)
         {
             Id = ID;
-            ObjectsInSector = new List<GameObject>();
         }
     }
 }

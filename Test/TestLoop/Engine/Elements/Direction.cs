@@ -13,7 +13,7 @@ namespace TestLoop
         public const short SOUTH = 270;
         public const short EAST = 360;
         public const short WEST = 180;
-        public const short NOVALUE = 0;
+        public const short ORIGIN = 0;
 
         private int value;
         public int Value
@@ -30,7 +30,7 @@ namespace TestLoop
 
         public void SteerTowardsValue(int value)
         {
-            if (Value == NOVALUE)
+            if (Value == ORIGIN)
             {
                 Value = value;
             }
@@ -58,13 +58,13 @@ namespace TestLoop
                     {
                         difference = (180 + difference);
                     }
-                    int diff = difference / 10;
+                    int diff = difference / 10; // TODO : Isolate this 10 somewhere.
                     if (diff < 1 && diff > 0)
                         diff = 1;
                     else if (diff < 0 && diff > -1)
                         diff = -1;
 
-                    Value += diff; // TODO : Isolate this 10 somewhere.
+                    Value += diff; 
                 }
             }
         }

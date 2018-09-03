@@ -9,10 +9,10 @@ namespace TestLoop
 {
     public class BackgroundInformation
     {
-        public int Width;
-        public int Height;
+        public int Width { get; set; }
+        public int Height { get; set; }
         public Color Color { get; set; } = Color.CornflowerBlue;
-        public int TextureId = -1;
+        public int TextureId { get; set; } = -1;
 
         public GameArea boundGameArea;
 

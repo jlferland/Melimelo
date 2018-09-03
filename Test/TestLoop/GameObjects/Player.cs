@@ -17,8 +17,12 @@ namespace TestLoop
         public float Acceleration { get; set; }
         public bool Stopped {
             get => Velocity == 0;
-            set { Velocity = 0; Acceleration = 0; Direction.Value = Direction.NOVALUE; }
+            set { Velocity = 0; Acceleration = 0; Direction.Value = Direction.ORIGIN; }
         }
+
+        // movement custom to this object (m/s)
+        public float WalkingSpeed { get; set; } = 1f;
+        public float RunningSpeed { get; set; } = 2f;
 
         // gravity related
         public float Weight { get; set; }
@@ -27,14 +31,12 @@ namespace TestLoop
         // collision related
         public List<ScreenSector> CurrentSectors { get; } = new List<ScreenSector>();
         public Rectangle CurrentObjectRectangle { get { return PositionRectangle; } }
-        public GravityHandler GravityHandler { get; set; }
 
         // sprite helper
         private SpriteSheetHandler spriteSheet;
 
-        public Player(GravityHandler gravityHandler)
+        public Player(GameArea currentGameArea) : base(currentGameArea)
         {
-            GravityHandler = gravityHandler;
         }
 
         // public methods
@@ -58,7 +60,7 @@ namespace TestLoop
 
             PositionRectangle = new Rectangle(Convert.ToInt32(X), Convert.ToInt32(Y), Width, Height);
 
-            Direction.Value = Direction.NOVALUE;
+            Direction.Value = Direction.ORIGIN;
             Velocity = 0;
             MaximumVelocity = 8f;
             Acceleration = 0;
@@ -147,7 +149,7 @@ namespace TestLoop
                     Acceleration += 1f;
                 }
 
-                GravityHandler.AddGravityAffectedObject(this);
+                CurrentGameArea.Gravity.AddGravityAffectedObject(this);
             }
         }
 
@@ -224,7 +226,7 @@ namespace TestLoop
 
                     // Landed on a surface
                     Stopped = true;
-                    GravityHandler.RemoveGravityAffectedObject(this);
+                    CurrentGameArea.Gravity.RemoveGravityAffectedObject(this);
 
                 }
                 if (direction == CollisionDirection.BOTTOM)

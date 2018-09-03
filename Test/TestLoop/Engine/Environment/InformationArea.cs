@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TestLoop
 {
-    class InformationArea
+    public class InformationArea
     {
     }
 }

@@ -18,7 +18,7 @@ namespace TestLoop
             Matrix
         }
 
-        public List<ScreenSector> Sectors;
+        public List<ScreenSector> Sectors { get; set; }
 
         public ScreenSectors(GameArea areaToSectorize, int SectorSize, SectorStyle style)
         {

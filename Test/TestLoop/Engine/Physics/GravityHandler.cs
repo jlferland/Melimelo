@@ -11,34 +11,43 @@ namespace TestLoop
     {
         private Dictionary<IMobile, TimeSpan> objectStartTimeFalling = new Dictionary<IMobile, TimeSpan>();
 
-        public float GravityConstant;
+        public float GravitationalConstant { get; set; }
+        public float AirDensity { get; set; }
+
         public Direction GravityDirection { get; } = new Direction();
         public List<IMobile> GravityAffectedObjects = new List<IMobile>();
 
-        public GravityHandler()
+        public GravityHandler(float gravitationalConstant, int gravityDirection, float airDensity)
         {
-            GravityConstant = 9.8f; 
-            GravityDirection.Value = Direction.SOUTH;
+            GravitationalConstant = gravitationalConstant;
+            GravityDirection.Value = gravityDirection;
+            AirDensity = airDensity;
         }
 
-        public void AddGravityAffectedObject(IMobile obj)
+        public void AddGravityAffectedObject(params IMobile[] objects)
         {
-            if (!GravityAffectedObjects.Contains(obj))
+            foreach (IMobile obj in objects)
             {
-                GravityAffectedObjects.Add(obj);
+                if (!GravityAffectedObjects.Contains(obj))
+                {
+                    GravityAffectedObjects.Add(obj);
 
-                objectStartTimeFalling.Add(obj, TimeSpan.Zero);
+                    objectStartTimeFalling.Add(obj, TimeSpan.Zero);
+                }
             }
         }
 
-        public void RemoveGravityAffectedObject(IMobile obj)
+        public void RemoveGravityAffectedObject(params IMobile[] objects)
         {
-            if (GravityAffectedObjects.Contains(obj))
+            foreach (IMobile obj in objects)
             {
-                GravityAffectedObjects.Remove(obj);
+                if (GravityAffectedObjects.Contains(obj))
+                {
+                    GravityAffectedObjects.Remove(obj);
 
-                if (objectStartTimeFalling.ContainsKey(obj))
-                    objectStartTimeFalling.Remove(obj);
+                    if (objectStartTimeFalling.ContainsKey(obj))
+                        objectStartTimeFalling.Remove(obj);
+                }
             }
         }
 
@@ -50,13 +59,13 @@ namespace TestLoop
                     objectStartTimeFalling[mobileObj] = EventClock.CurrentGameTime.TotalGameTime;
 
                 float elapsedTime = (float)EventClock.CurrentGameTime.TotalGameTime.Subtract(objectStartTimeFalling[mobileObj]).TotalSeconds;
-               
+
                 mobileObj.Direction.SteerTowardsValue(GravityDirection.Value);
 
                 if (mobileObj.Direction.Value - GravityDirection.Value > 90 || mobileObj.Direction.Value - GravityDirection.Value < -90)
                 {
-                    mobileObj.Acceleration -= (0.5f *
-                           GravityConstant *
+                    mobileObj.Acceleration -= (AirDensity *
+                           GravitationalConstant *
                            mobileObj.GravityAffectedFactor *
                            elapsedTime *
                            elapsedTime);
@@ -66,8 +75,8 @@ namespace TestLoop
                 }
                 else
                 {
-                    mobileObj.Acceleration += (0.5f *
-                           GravityConstant *
+                    mobileObj.Acceleration += (AirDensity *
+                           GravitationalConstant *
                            mobileObj.GravityAffectedFactor *
                            elapsedTime *
                            elapsedTime);

@@ -8,9 +8,6 @@ namespace TestLoop
 {
     public class TestGameArea : GameArea
     {
-        private GravityHandler gravity;
-        private CollisionHandler collision;
-
         private Player player;
         private Tile tile;
 
@@ -22,31 +19,26 @@ namespace TestLoop
 
         public override void Initialize()
         {
-            gravity = new GravityHandler();
-            collision = new CollisionHandler(this);
+            // change parameters before calling base.initialize
+            PixelsPerMeters = 10f;
 
-            player = new Player(gravity);
-            tile = new Tile();
+            // initialize parent obj
+            base.Initialize();
 
-            AddGameObject(player);
-            AddGameObject(tile);
+            // initialize custom items
+            player = new Player(this);
+            tile = new Tile(this);
 
-            gravity.AddGravityAffectedObject(player);
-
-            collision.AddCollidableObject(player);
-            collision.AddCollidableObject(tile);            
-
-
+            // register new objects to appropriate handlers
+            AddGameObject(player, tile);
+            Gravity.AddGravityAffectedObject(player);
+            Collision.AddCollidableObject(player, tile);
         }
 
         public override void Update()
         {
             // moving objects
-            gravity.Apply();
             base.Update();
-
-            // handle collisions
-            collision.HandleCollisions();
         }
     }
 }

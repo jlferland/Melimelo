@@ -9,16 +9,17 @@ namespace TestLoop
 {
     public class SpriteSheetHandler
     {
-        private List<Rectangle> SpriteFrames = new List<Rectangle>();
-        private int maxFrame;
+        public int TextureId { get; }
+
+        private List<Rectangle> SpriteFrames { get; } = new List<Rectangle>();
+        private int MaxFrame { get; set; }
         private int currentFrame;
-        private int textureId;
 
         public SpriteSheetHandler(int objTextureId, int startOffsetX, int startOffsetY, int offsetX, int offsetY, int width, int height)
         {
-            textureId = objTextureId;
-            int imageHeight = GraphicsUtility.TextureCollection[textureId].Height;
-            int imageWidth = GraphicsUtility.TextureCollection[textureId].Width;
+            TextureId = objTextureId;
+            int imageHeight = GraphicsUtility.TextureCollection[TextureId].Height;
+            int imageWidth = GraphicsUtility.TextureCollection[TextureId].Width;
             int currentRow = startOffsetY;
             int currentColumn = startOffsetX;
 
@@ -37,20 +38,20 @@ namespace TestLoop
 
                 currentColumn += width + offsetX + startOffsetX;
             }
-            maxFrame = SpriteFrames.Count - 1;
+            MaxFrame = SpriteFrames.Count - 1;
         }
 
         public int CurrentFrame
         {
             set {
                 if (value < 0)
-                    currentFrame = 0;
+                    CurrentFrame = 0;
                 else if (value > SpriteFrames.Count - 1)
-                    currentFrame = maxFrame;
+                    CurrentFrame = MaxFrame;
                 else
-                    currentFrame = value;
+                    CurrentFrame = value;
             }
-            get { return currentFrame; }
+            get { return CurrentFrame; }
         }
 
         public Rectangle GetFrameRectangle(int id)
@@ -58,14 +59,14 @@ namespace TestLoop
             if (id < 0)
                 id = 0;
             else if (id > SpriteFrames.Count - 1)
-                id = maxFrame;
+                id = MaxFrame;
 
             return SpriteFrames[id];
         }
 
         public Rectangle getCurrentFrameRectangle()
         {
-            return SpriteFrames[currentFrame];
+            return SpriteFrames[CurrentFrame];
         }
 
         public int Count
@@ -73,14 +74,6 @@ namespace TestLoop
             get
             {
                 return SpriteFrames.Count;
-            }
-        }
-
-        public int TextureId
-        {
-            get
-            {
-                return textureId;
             }
         }
     }

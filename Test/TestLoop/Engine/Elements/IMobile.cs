@@ -37,20 +37,13 @@ namespace TestLoop
             set;
         }
 
-
         float Weight
         {
             get;
             set;
         }
 
-        float GravityAffectedFactor // 1 = full effect
-        {
-            get;
-            set;
-        }
-
-        GravityHandler GravityHandler
+        float GravityAffectedFactor // 1 = full effect, 0 = no effect
         {
             get;
             set;

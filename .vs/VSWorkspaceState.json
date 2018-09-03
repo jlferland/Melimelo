@@ -6,11 +6,8 @@
     "\\Test\\TestLoop\\bin",
     "\\Test\\TestLoop\\bin\\DesktopGL",
     "\\Test\\TestLoop\\bin\\DesktopGL\\AnyCPU",
-    "\\Test\\TestLoop\\Content\\obj",
-    "\\Test\\TestLoop\\Content\\obj\\DesktopGL",
-    "\\Test\\TestLoop\\Content\\obj\\DesktopGL\\Sprites",
-    "\\Test\\TestLoop\\obj",
-    "\\Test\\TestLoop\\obj\\Release"
+    "\\Test\\TestLoop\\obj"
   ],
+  "SelectedNode": "\\Test\\TestLoop\\TestLoop.sln",
   "PreviewInSolutionExplorer": false
 }

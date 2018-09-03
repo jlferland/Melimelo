@@ -9,11 +9,14 @@ namespace TestLoop
 {
     public abstract class GameObject
     {
+        // Current game area
+        public GameArea CurrentGameArea { get; set; }
+
         // active flag
-        public bool Active = true;
+        public bool Active { get; set; } = true;
 
         // Visibility related
-        public bool Visible = true;
+        public bool Visible { get; set; } = true;
         public bool OnScreen
         {
             get { return true; }
@@ -21,16 +24,16 @@ namespace TestLoop
         public int LayerIndex;
 
         // positioning 
-        private Vector2 screenPosition = new Vector2();
+        private Vector2 ScreenPosition = new Vector2();
         public float X
         {
-            get { return screenPosition.X; }
-            set { screenPosition.X = value; PositionRectangle.X = Convert.ToInt32(value); }
+            get { return ScreenPosition.X; }
+            set { ScreenPosition.X = value; PositionRectangle.X = Convert.ToInt32(value); }
         }
         public float Y
         {
-            get { return screenPosition.Y; }
-            set { screenPosition.Y = value; PositionRectangle.Y = Convert.ToInt32(value); }
+            get { return ScreenPosition.Y; }
+            set { ScreenPosition.Y = value; PositionRectangle.Y = Convert.ToInt32(value); }
         }
         
         public Vector2 GameAreaPosition = new Vector2();
@@ -47,6 +50,11 @@ namespace TestLoop
 
         public abstract void Initialize();
         public abstract void Update();
+
+        public GameObject(GameArea currentGameArea)
+        {
+            CurrentGameArea = currentGameArea;
+        }
 
         public virtual Rectangle GetDrawingRectangle()
         {

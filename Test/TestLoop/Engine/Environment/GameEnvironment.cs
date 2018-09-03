@@ -9,7 +9,7 @@ namespace TestLoop
 {
     public class GameEnvironment
     {
-        private Game gameObject;
+        private Game gameObject { get; set; }
         private List<InformationArea> registeredInfoArea = new List<InformationArea>();
         private List<GameArea> registeredGameArea = new List<GameArea>();
 
@@ -18,11 +18,14 @@ namespace TestLoop
             gameObject = currentGame;
         }
 
-        public void AddGameArea(GameArea newArea)
+        public void AddGameArea(params GameArea[] newAreas)
         {
-            registeredGameArea.Add(newArea);
+            foreach (GameArea newArea in newAreas)
+            {
+                registeredGameArea.Add(newArea);
 
-            newArea.Initialize();
+                newArea.Initialize();
+            }
         }
 
         public virtual void Initialize()
