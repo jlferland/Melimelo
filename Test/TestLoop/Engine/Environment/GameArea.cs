@@ -14,7 +14,16 @@ namespace TestLoop
         public Direction GravityDirection { get; } = new Direction();
 
         public float PixelsPerMeters { get; set; } = 10;        
-        public float MaxFramePerSecond { get; set; } = 60; // impacts event clock to set new events triggers
+        private int maxFramePerSecond = 60;
+        public int MaxFramePerSecond // impacts event clock to set new events triggers
+        {
+            get { return maxFramePerSecond; }
+            set {
+                    maxFramePerSecond = value;
+                    NextFrameTimeSpan = new TimeSpan(0, 0, 0, 0, (int)(((float)1 / value) * 1000));
+            }
+        }
+        private TimeSpan NextFrameTimeSpan { get; set; } = new TimeSpan(0,0,0,0, (int)(((float)1 / 60) * 1000));
 
         public GravityHandler Gravity { get; set; }
         public CollisionHandler Collision { get; set; }
@@ -64,21 +73,27 @@ namespace TestLoop
         {
             Gravity = new GravityHandler(GravitationalConstant, GravityDirection.Value, AirDensity);
             Collision = new CollisionHandler(this);
+
+            // register first event
+            EventClock.AddGameEvent(new EventClock.GameEvent(Update), TimeSpan.Zero);
         }
 
-        public virtual void Update()
+        public virtual void Update(GameTime gameTime)
         {
             // move objects
             for (int i = activeObjects.Count - 1; i >= 0; i--)
             {
-                activeObjects[i].Update();
+                activeObjects[i].Update(gameTime);
             }
             
             // gravity
-            Gravity.Apply();
+            Gravity.Apply(gameTime);
 
             // handle collisions
             Collision.HandleCollisions();
+
+            // register next update
+            EventClock.AddGameEvent(new EventClock.GameEvent(Update), NextFrameTimeSpan);
         }
     }
 }

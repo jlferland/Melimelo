@@ -21,6 +21,7 @@ namespace TestLoop
         {
             // change parameters before calling base.initialize
             PixelsPerMeters = 10f;
+            MaxFramePerSecond = 60;
 
             // initialize parent obj
             base.Initialize();
@@ -33,12 +34,6 @@ namespace TestLoop
             AddGameObject(player, tile);
             Gravity.AddGravityAffectedObject(player);
             Collision.AddCollidableObject(player, tile);
-        }
-
-        public override void Update()
-        {
-            // moving objects
-            base.Update();
         }
     }
 }

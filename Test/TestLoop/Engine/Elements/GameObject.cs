@@ -49,7 +49,7 @@ namespace TestLoop
         public string assetName;
 
         public abstract void Initialize();
-        public abstract void Update();
+        public abstract void Update(GameTime gameTime);
 
         public GameObject(GameArea currentGameArea)
         {

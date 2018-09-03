@@ -23,28 +23,19 @@ namespace TestLoop
             foreach (GameArea newArea in newAreas)
             {
                 registeredGameArea.Add(newArea);
-
                 newArea.Initialize();
-            }
-        }
-
-        public virtual void Initialize()
-        {
-            for (int i = registeredGameArea.Count - 1; i >= 0; i--)
-            {
-                registeredGameArea[i].Update();
             }
         }
 
         public virtual void Update(GameTime gameTime)
         {
-            EventClock.CurrentGameTime = gameTime;
             InputHandler.UpdateInputs();
+            EventClock.ProcessGameEvents(gameTime);
 
-            for (int i = registeredGameArea.Count - 1; i >= 0; i--)
-            {
-                registeredGameArea[i].Update();
-            }
+            //for (int i = registeredGameArea.Count - 1; i >= 0; i--)
+            //{
+            //    registeredGameArea[i].Update();
+            //}
         }
 
         public virtual void ClearUnmanagedContent()

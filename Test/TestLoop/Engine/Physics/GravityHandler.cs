@@ -51,14 +51,14 @@ namespace TestLoop
             }
         }
 
-        public void Apply()
+        public void Apply(GameTime gameTime)
         {
             foreach (IMobile mobileObj in GravityAffectedObjects)
             {
                 if (objectStartTimeFalling[mobileObj] == TimeSpan.Zero)
-                    objectStartTimeFalling[mobileObj] = EventClock.CurrentGameTime.TotalGameTime;
+                    objectStartTimeFalling[mobileObj] = gameTime.TotalGameTime;
 
-                float elapsedTime = (float)EventClock.CurrentGameTime.TotalGameTime.Subtract(objectStartTimeFalling[mobileObj]).TotalSeconds;
+                float elapsedTime = (float)gameTime.TotalGameTime.Subtract(objectStartTimeFalling[mobileObj]).TotalSeconds;
 
                 mobileObj.Direction.SteerTowardsValue(GravityDirection.Value);
 

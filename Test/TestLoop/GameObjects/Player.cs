@@ -10,14 +10,24 @@ namespace TestLoop
 {
     public class Player : GameObject, ICollidable, IMobile, IUserInputtable
     {
+        public enum PlayerState
+        {
+            STOPPED = 0,
+            WALKING = 1,
+            RUNNING = 2,
+            JUMPING = 4,
+            FALLING = 8
+        }
+
         // movement related
+        public PlayerState State { get; set; }
         public Direction Direction { get; } = new Direction();
         public float Velocity { get; set; }
         public float MaximumVelocity { get; set; }
         public float Acceleration { get; set; }
         public bool Stopped {
             get => Velocity == 0;
-            set { Velocity = 0; Acceleration = 0; Direction.Value = Direction.ORIGIN; }
+            set { Velocity = 0; Acceleration = 0; Direction.Origin = true; State = PlayerState.STOPPED; }
         }
 
         // movement custom to this object (m/s)
@@ -60,9 +70,9 @@ namespace TestLoop
 
             PositionRectangle = new Rectangle(Convert.ToInt32(X), Convert.ToInt32(Y), Width, Height);
 
-            Direction.Value = Direction.ORIGIN;
+            Direction.Origin = true;
             Velocity = 0;
-            MaximumVelocity = 8f;
+            MaximumVelocity = 5f;
             Acceleration = 0;
 
             Weight = 1;
@@ -140,20 +150,31 @@ namespace TestLoop
             {
                 if (Velocity <= 0)
                 {
+                    CurrentGameArea.Gravity.AddGravityAffectedObject(this);
                     Direction.Value = Direction.NORTH;
-                    Acceleration = 0.2f;
+                    Acceleration = 2f;
                 }
                 else
                 {
-                    Direction.SteerTowardsValue(Direction.NORTH);
-                    Acceleration += 1f;
+                    if (State == PlayerState.JUMPING)
+                    {
+                        Direction.SteerTowardsValue(Direction.NORTH);
+                    }
+                    else
+                    {
+                        CurrentGameArea.Gravity.AddGravityAffectedObject(this);
+                        Direction.Value = Direction.NORTH;
+                    }
+
+                    Acceleration += 1f;                   
                 }
 
-                CurrentGameArea.Gravity.AddGravityAffectedObject(this);
+                State = PlayerState.JUMPING;
+
             }
         }
 
-        public void Move()
+        public void Move(GameTime gameTime)
         {
             // change speed
             Velocity += Acceleration;
@@ -201,13 +222,13 @@ namespace TestLoop
             Y += YVelocityModifier;
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
             // process input
             ProcessUserInput(InputHandler.CurrentKState, InputHandler.CurrentC1State);
 
             // move object
-            Move();
+            Move(gameTime);
         }
 
         public void HandleMobileCollision<T>(ICollidable collidedObject, CollisionDirection direction, params object[] extraParameters)

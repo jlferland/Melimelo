@@ -13,7 +13,8 @@ namespace TestLoop
         public const short SOUTH = 270;
         public const short EAST = 360;
         public const short WEST = 180;
-        public const short ORIGIN = 0;
+
+        public bool Origin { get; set; } = true;
 
         private int value;
         public int Value
@@ -21,18 +22,32 @@ namespace TestLoop
             get { return value; }
             set
             {
-                if (value > 360 || value < 0)
+                // between -360 and 360
+                if (value > 360 || value < -360)
                     this.value = value % 360;
                 else
                     this.value = value;
+
+                // negative angles
+                if (this.value < 0)
+                    this.value = 360 + this.value;
+
+                // if 0, make it 360
+                if (this.value == 0)
+                    this.value = EAST;
+
+                Origin = false;
             }
         }
 
-        public void SteerTowardsValue(int value)
+        public int SteerTowardsValue(int value)
         {
-            if (Value == ORIGIN)
+            int retrDifference = 0;
+
+            if (Origin)
             {
                 Value = value;
+                Origin = false;
             }
             else
             {
@@ -47,26 +62,29 @@ namespace TestLoop
 
                 if (tempValue != Value)
                 {
-                    int difference = tempValue - Value;
-                    while (difference < -180) difference += 360;
-                    while (difference > 180) difference -= 360;
-                    if (difference > 90)
+                    retrDifference = tempValue - Value;
+                    while (retrDifference < -180) retrDifference += 360;
+                    while (retrDifference > 180) retrDifference -= 360;
+                    if (retrDifference > 90)
                     {
-                        difference = (180 - difference);
+                        retrDifference = (180 - retrDifference);
                     }
-                    else if (difference < -90)
+                    else if (retrDifference < -90)
                     {
-                        difference = (180 + difference);
+                        retrDifference = (180 + retrDifference);
                     }
-                    int diff = difference / 10; // TODO : Isolate this 10 somewhere.
+                    float diff = retrDifference / 10f; // TODO : Isolate this 10 somewhere.
+
                     if (diff < 1 && diff > 0)
                         diff = 1;
                     else if (diff < 0 && diff > -1)
-                        diff = -1;
+                         diff = -1;
 
-                    Value += diff; 
+                    Value += (int)diff; 
                 }
             }
+
+            return retrDifference;
         }
     }
 }

@@ -76,7 +76,7 @@ namespace TestLoop
             }
         }
 
-        public override void Update()
+        public override void Update(GameTime gameTime)
         {
 
         }
