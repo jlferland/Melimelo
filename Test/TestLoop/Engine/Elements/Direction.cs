@@ -63,17 +63,18 @@ namespace TestLoop
                 if (tempValue != Value)
                 {
                     retrDifference = tempValue - Value;
-                    while (retrDifference < -180) retrDifference += 360;
-                    while (retrDifference > 180) retrDifference -= 360;
-                    if (retrDifference > 90)
+                    int difference = retrDifference;
+                    while (difference < -180) difference += 360;
+                    while (difference > 180) difference -= 360;
+                    if (difference > 90)
                     {
-                        retrDifference = (180 - retrDifference);
+                        difference = (180 - difference);
                     }
-                    else if (retrDifference < -90)
+                    else if (difference < -90)
                     {
-                        retrDifference = (180 + retrDifference);
+                        difference = (180 + difference);
                     }
-                    float diff = retrDifference / 10f; // TODO : Isolate this 10 somewhere.
+                    float diff = difference / 10f; // TODO : Isolate this 10 somewhere.
 
                     if (diff < 1 && diff > 0)
                         diff = 1;

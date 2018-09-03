@@ -47,6 +47,7 @@ namespace TestLoop
             // Surface
             Friction = 0;
             Bounce = 0;
+            CurrentGameArea.Collision.AddCollidableObject(this);
 
             if (assetName == null)
             {

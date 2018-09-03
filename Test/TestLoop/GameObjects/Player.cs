@@ -25,7 +25,8 @@ namespace TestLoop
         public float Velocity { get; set; }
         public float MaximumVelocity { get; set; }
         public float Acceleration { get; set; }
-        public bool Stopped {
+        public bool Stopped
+        {
             get => Velocity == 0;
             set { Velocity = 0; Acceleration = 0; Direction.Origin = true; State = PlayerState.STOPPED; }
         }
@@ -45,6 +46,9 @@ namespace TestLoop
         // sprite helper
         private SpriteSheetHandler spriteSheet;
 
+        // currently landed surface
+        private GameObject surface;
+
         public Player(GameArea currentGameArea) : base(currentGameArea)
         {
         }
@@ -58,6 +62,8 @@ namespace TestLoop
 
         private void SetInitialState()
         {
+            State = PlayerState.FALLING;
+
             Active = true;
             Visible = true;
             LayerIndex = 1;
@@ -77,6 +83,8 @@ namespace TestLoop
 
             Weight = 1;
             GravityAffectedFactor = 1;
+            CurrentGameArea.Gravity.AddGravityAffectedObject(this);
+            CurrentGameArea.Collision.AddCollidableObject(this);
 
             if (assetName == null)
             {
@@ -102,6 +110,9 @@ namespace TestLoop
 
             else if (kstate.IsKeyDown(Keys.D2))
                 spriteSheet.CurrentFrame++;
+
+            if (kstate.IsKeyDown(Keys.LeftAlt))
+                SetInitialState();
 
             if (kstate.IsKeyDown(Keys.Right))
             {
@@ -148,29 +159,32 @@ namespace TestLoop
 
             if (kstate.IsKeyDown(Keys.Space))
             {
-                if (Velocity <= 0)
+                if (State != PlayerState.FALLING)
                 {
-                    CurrentGameArea.Gravity.AddGravityAffectedObject(this);
-                    Direction.Value = Direction.NORTH;
-                    Acceleration = 2f;
-                }
-                else
-                {
-                    if (State == PlayerState.JUMPING)
-                    {
-                        Direction.SteerTowardsValue(Direction.NORTH);
-                    }
-                    else
+
+                    if (Velocity <= 0)
                     {
                         CurrentGameArea.Gravity.AddGravityAffectedObject(this);
                         Direction.Value = Direction.NORTH;
+                        Acceleration = 2f;
+                    }
+                    else
+                    {
+                        if (State == PlayerState.JUMPING)
+                        {
+                            Direction.SteerTowardsValue(Direction.NORTH);
+                        }
+                        else
+                        {
+                            CurrentGameArea.Gravity.AddGravityAffectedObject(this);
+                            Direction.Value = Direction.NORTH;
+                        }
+
+                        Acceleration += 1f;
                     }
 
-                    Acceleration += 1f;                   
+                    State = PlayerState.JUMPING;
                 }
-
-                State = PlayerState.JUMPING;
-
             }
         }
 
@@ -218,8 +232,24 @@ namespace TestLoop
             XVelocityModifier = (XVelocityModifier / 90) * Velocity;
             YVelocityModifier = (YVelocityModifier / 90) * Velocity;
 
-            X += XVelocityModifier;        
+            X += XVelocityModifier;
             Y += YVelocityModifier;
+
+            // check for surface
+            if (surface != null)
+            {
+                // y axis
+                if (this.PositionRectangle.Bottom < surface.PositionRectangle.Y)
+                {
+                    State = PlayerState.FALLING;
+                    CurrentGameArea.Gravity.AddGravityAffectedObject(this);
+                }
+                else if (this.PositionRectangle.X > surface.PositionRectangle.Right || this.PositionRectangle.Right < surface.PositionRectangle.X)
+                {
+                    State = PlayerState.FALLING;
+                    CurrentGameArea.Gravity.AddGravityAffectedObject(this);
+                }
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -231,30 +261,28 @@ namespace TestLoop
             Move(gameTime);
         }
 
-        public void HandleMobileCollision<T>(ICollidable collidedObject, CollisionDirection direction, params object[] extraParameters)
+        public void HandleMobileCollision<T>(ICollidable collidedObject, CollisionDirection direction)
         {
             // surface handling
             if (typeof(T) == typeof(ISurface))
             {
-                int moverBottomPoint = (int)extraParameters[0];
-                int colliderBottomPoint = (int)extraParameters[1];
-
                 // Adjust position
                 // top collision
                 if (direction == CollisionDirection.TOP)
                 {
-                    Y = Y - (moverBottomPoint - collidedObject.CurrentObjectRectangle.Y);
+                    Y = Y - (this.PositionRectangle.Bottom - collidedObject.CurrentObjectRectangle.Y);
 
                     // Landed on a surface
                     Stopped = true;
-                    CurrentGameArea.Gravity.RemoveGravityAffectedObject(this);
 
+                    CurrentGameArea.Gravity.RemoveGravityAffectedObject(this);
+                    surface = (GameObject)collidedObject;
                 }
                 if (direction == CollisionDirection.BOTTOM)
                 {
                     // stopped by a surface
                     Stopped = true;
-                    Y = colliderBottomPoint;
+                    Y = ((GameObject)collidedObject).PositionRectangle.Bottom;
                 }
             }
         }

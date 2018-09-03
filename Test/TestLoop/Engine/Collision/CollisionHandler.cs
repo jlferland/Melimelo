@@ -51,14 +51,12 @@ namespace TestLoop
                             {
                                 // detect collision direction
                                 CollisionDirection direction = CollisionDirection.NONE;
-                                int moverBottomPoint = objMover.CurrentObjectRectangle.Y + objMover.CurrentObjectRectangle.Height;
-                                int colliderBottomPoint = objCollider.CurrentObjectRectangle.Y + objCollider.CurrentObjectRectangle.Height;
 
-                                if (moverBottomPoint > objCollider.CurrentObjectRectangle.Y && moverBottomPoint < colliderBottomPoint)
+                                if (objMover.CurrentObjectRectangle.Bottom > objCollider.CurrentObjectRectangle.Y && objMover.CurrentObjectRectangle.Bottom < objCollider.CurrentObjectRectangle.Bottom)
                                 {
                                     direction = CollisionDirection.TOP;
                                 }
-                                else if (colliderBottomPoint > objMover.CurrentObjectRectangle.Y)
+                                else if (objCollider.CurrentObjectRectangle.Bottom > objMover.CurrentObjectRectangle.Y)
                                 {
                                     direction = CollisionDirection.BOTTOM;
                                 }
@@ -66,7 +64,7 @@ namespace TestLoop
                                 // handle collision on the mover
                                 if (typeof(ISurface).IsAssignableFrom(objCollider.GetType()))
                                 {
-                                    mover.HandleMobileCollision<ISurface>(objCollider, direction, moverBottomPoint, colliderBottomPoint);
+                                    mover.HandleMobileCollision<ISurface>(objCollider, direction);
                                 }
                             }
                         }

@@ -35,11 +35,11 @@ namespace TestLoop
             get { return ScreenPosition.Y; }
             set { ScreenPosition.Y = value; PositionRectangle.Y = Convert.ToInt32(value); }
         }
-        
+
         public Vector2 GameAreaPosition = new Vector2();
 
         public Rectangle PositionRectangle = Rectangle.Empty;
-        
+
         // size related
         public short Width;
         public short Height;

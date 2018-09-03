@@ -34,8 +34,6 @@ namespace TestLoop
 
             // register new objects to appropriate handlers
             AddGameObject(player, tile, tile2, tile3);
-            Gravity.AddGravityAffectedObject(player);
-            Collision.AddCollidableObject(player, tile, tile2, tile3);
         }
     }
 }

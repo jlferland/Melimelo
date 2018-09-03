@@ -52,6 +52,6 @@ namespace TestLoop
 
         void Move(GameTime gameTime);
 
-        void HandleMobileCollision<T>(ICollidable collidedObject, CollisionDirection direction, params object[] extraParameters);
+        void HandleMobileCollision<T>(ICollidable collidedObject, CollisionDirection direction);
     }
 }
