@@ -13,7 +13,7 @@ namespace TestLoop
 
         private List<Rectangle> SpriteFrames { get; } = new List<Rectangle>();
         private int MaxFrame { get; set; }
-        private int currentFrame;
+        private int currentFrame = 0;
 
         public SpriteSheetHandler(int objTextureId, int startOffsetX, int startOffsetY, int offsetX, int offsetY, int width, int height)
         {
@@ -45,13 +45,13 @@ namespace TestLoop
         {
             set {
                 if (value < 0)
-                    CurrentFrame = 0;
+                    currentFrame = 0;
                 else if (value > SpriteFrames.Count - 1)
-                    CurrentFrame = MaxFrame;
+                    currentFrame = MaxFrame;
                 else
-                    CurrentFrame = value;
+                    currentFrame = value;
             }
-            get { return CurrentFrame; }
+            get { return currentFrame; }
         }
 
         public Rectangle GetFrameRectangle(int id)
