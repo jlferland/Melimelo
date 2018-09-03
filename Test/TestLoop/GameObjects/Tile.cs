@@ -19,8 +19,10 @@ namespace TestLoop
         // sprite helper
         private SpriteSheetHandler spriteSheet;
 
-        public Tile(GameArea currentGameArea) : base(currentGameArea)
+        public Tile(GameArea currentGameArea, int x, int y) : base(currentGameArea)
         {
+            X = x;
+            Y = y;
         }
 
         // public methods 
@@ -35,9 +37,6 @@ namespace TestLoop
             Active = true;
             Visible = true;
             LayerIndex = 0;
-
-            X = 10;
-            Y = 100;
 
             // final tile size (individual tiles are 16*16)
             Height = 32;

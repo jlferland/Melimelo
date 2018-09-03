@@ -9,7 +9,7 @@ namespace TestLoop
     public class TestGameArea : GameArea
     {
         private Player player;
-        private Tile tile;
+        private Tile tile, tile2, tile3;
 
         public TestGameArea(int screenPositionX, int screenPositionY, int viewportWidth, int viewportHeight) : 
             base(screenPositionX, screenPositionY, viewportWidth, viewportHeight) 
@@ -28,12 +28,14 @@ namespace TestLoop
 
             // initialize custom items
             player = new Player(this);
-            tile = new Tile(this);
+            tile = new Tile(this, 10, 100);
+            tile2 = new Tile(this, 100, 80);
+            tile3 = new Tile(this, 140, 260);
 
             // register new objects to appropriate handlers
-            AddGameObject(player, tile);
+            AddGameObject(player, tile, tile2, tile3);
             Gravity.AddGravityAffectedObject(player);
-            Collision.AddCollidableObject(player, tile);
+            Collision.AddCollidableObject(player, tile, tile2, tile3);
         }
     }
 }
