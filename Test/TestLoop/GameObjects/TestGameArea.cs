@@ -28,9 +28,9 @@ namespace TestLoop
 
             // initialize custom items
             player = new Player(this);
-            tile = new Tile(this, 10, 100);
-            tile2 = new Tile(this, 100, 80);
-            tile3 = new Tile(this, 140, 260);
+            tile = new Tile(this, 10, 100, 3, 2);
+            tile2 = new Tile(this, 100, 80, 3, 2);
+            tile3 = new Tile(this, 80, 260, 6, 2);
 
             // register new objects to appropriate handlers
             AddGameObject(player, tile, tile2, tile3);

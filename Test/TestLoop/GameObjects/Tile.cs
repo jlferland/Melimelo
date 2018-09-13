@@ -16,13 +16,18 @@ namespace TestLoop
         public float Bounce { get; set; }
         public SurfaceTypes SurfaceType { get; set; }
 
+        public int BlockHeight { get; set; }
+        public int BlockWidth { get; set; }
+
         // sprite helper
         private SpriteSheetHandler spriteSheet;
 
-        public Tile(GameArea currentGameArea, int x, int y) : base(currentGameArea)
+        public Tile(GameArea currentGameArea, int x, int y, int blockWidth, int blockHeight) : base(currentGameArea)
         {
             X = x;
             Y = y;
+            BlockHeight = blockHeight;
+            BlockWidth = blockWidth;
         }
 
         // public methods 
@@ -39,8 +44,8 @@ namespace TestLoop
             LayerIndex = 0;
 
             // final tile size (individual tiles are 16*16)
-            Height = 32;
-            Width = 48;
+            Height = BlockHeight * 16;
+            Width = BlockWidth * 16;
 
             PositionRectangle = new Rectangle(Convert.ToInt32(X), Convert.ToInt32(Y), Width, Height);
 
@@ -63,13 +68,17 @@ namespace TestLoop
                 renderer.AddTextureId(spriteSheet);
 
                 List<TiledTextureDescriptor> tiles = new List<TiledTextureDescriptor>();
-                tiles.Add(new TiledTextureDescriptor(0, 0, 2));
-                tiles.Add(new TiledTextureDescriptor(16, 0, 3));
-                tiles.Add(new TiledTextureDescriptor(32, 0, 2));
-                tiles.Add(new TiledTextureDescriptor(0, 16, 0));
-                tiles.Add(new TiledTextureDescriptor(16, 16, 1));
-                tiles.Add(new TiledTextureDescriptor(32, 16, 0));
+                int spriteIdOffset = 2;
+                for (int i = 0; i < BlockHeight; i++)
+                {
+                    if (i > 0)
+                        spriteIdOffset = 0;
 
+                    for (int j = 0; j < BlockWidth; j++)
+                    {
+                        tiles.Add(new TiledTextureDescriptor(j * 16, i * 16, spriteIdOffset + j % 2));
+                    }
+                }
                 textureId = renderer.RenderTexture("tiletest " + Height.ToString() + " " + Width.ToString(), tiles, Width, Height);
 
                 GraphicsUtility.AddVisibleGameObjects(LayerIndex, this);

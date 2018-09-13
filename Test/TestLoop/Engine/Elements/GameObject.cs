@@ -42,8 +42,8 @@ namespace TestLoop
         public Rectangle PositionRectangle = Rectangle.Empty;
 
         // size related
-        public short Width;
-        public short Height;
+        public int Width;
+        public int Height;
 
         // texture
         public int textureId;
