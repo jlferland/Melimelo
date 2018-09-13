@@ -53,6 +53,7 @@
     <Compile Include="Engine\Graphics\Texture\TiledTextureRenderer.cs" />
     <Compile Include="Engine\Graphics\Texture\TiledTextureDescriptor.cs" />
     <Compile Include="Engine\Physics\GravityHandler.cs" />
+    <Compile Include="Engine\Utilities\CVector2.cs" />
     <Compile Include="Engine\Utilities\EventClock.cs" />
     <Compile Include="Engine\Utilities\ExtensionMethods.cs" />
     <Compile Include="Engine\Utilities\InputHandler.cs" />

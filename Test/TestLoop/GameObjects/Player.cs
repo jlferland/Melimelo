@@ -21,14 +21,24 @@ namespace TestLoop
 
         // movement related
         public PlayerState State { get; set; }
-        public Direction Direction { get; } = new Direction();
-        public float Velocity { get; set; }
-        public float MaximumVelocity { get; set; }
-        public float Acceleration { get; set; }
+        public CVector2 Velocity { get; } = new CVector2();
+        public CVector2 MaximumVelocity { get; } = new CVector2();
+        public CVector2 NegativeMaximumVelocity { get; } = new CVector2();
+        public CVector2 Acceleration { get; } = new CVector2();
+
         public bool Stopped
         {
-            get => Velocity == 0;
-            set { Velocity = 0; Acceleration = 0; Direction.Origin = true; State = PlayerState.STOPPED; }
+            get => Velocity.X == 0 &&
+                   Velocity.Y == 0 &&
+                   State == PlayerState.STOPPED;
+            set
+            {
+                Velocity.X = 0;
+                Velocity.Y = 0;
+                Acceleration.X = 0;
+                Acceleration.Y = 0;
+                State = PlayerState.STOPPED;
+            }
         }
 
         // movement custom to this object (m/s)
@@ -51,6 +61,7 @@ namespace TestLoop
 
         public Player(GameArea currentGameArea) : base(currentGameArea)
         {
+
         }
 
         // public methods
@@ -76,10 +87,14 @@ namespace TestLoop
 
             PositionRectangle = new Rectangle(Convert.ToInt32(X), Convert.ToInt32(Y), Width, Height);
 
-            Direction.Origin = true;
-            Velocity = 0;
-            MaximumVelocity = 5f;
-            Acceleration = 0;
+            Velocity.X = 0;
+            Velocity.Y = 0;
+            MaximumVelocity.X = 6f;
+            MaximumVelocity.Y = 10f;
+            NegativeMaximumVelocity.X = -6f;
+            NegativeMaximumVelocity.Y = -10f;
+            Acceleration.X = 0;
+            Acceleration.Y = 0;
 
             Weight = 1;
             GravityAffectedFactor = 1;
@@ -117,43 +132,12 @@ namespace TestLoop
             if (kstate.IsKeyDown(Keys.Right))
             {
                 spriteSheet.CurrentFrame = 3;
-
-                if (Velocity <= 0)
-                {
-                    Acceleration = 0.2f;
-                    Direction.Value = Direction.EAST;
-                }
-                else
-                {
-                    if (Direction.Value == Direction.WEST && Velocity > 0)
-                        Velocity -= 0.2f;
-                    else
-                    {
-                        Acceleration += 0.2f;
-                        Direction.SteerTowardsValue(Direction.EAST);
-                    }
-                }
+                Acceleration.X += 0.2f;
             }
             else if (kstate.IsKeyDown(Keys.Left))
             {
                 spriteSheet.CurrentFrame = 1;
-
-                if (Velocity <= 0)
-                {
-                    Acceleration = 0.2f;
-                    Direction.Value = Direction.WEST;
-                }
-                else
-                {
-                    if (Direction.Value == Direction.EAST && Velocity > 0)
-                        Velocity -= 0.2f;
-                    else
-                    {
-                        Acceleration += 0.2f;
-                        Direction.SteerTowardsValue(Direction.WEST);
-
-                    }
-                }
+                Acceleration.X -= 0.2f;
             }
 
 
@@ -161,29 +145,12 @@ namespace TestLoop
             {
                 if (State != PlayerState.FALLING)
                 {
-
-                    if (Velocity <= 0)
+                    if (State != PlayerState.JUMPING)
                     {
                         CurrentGameArea.Gravity.AddGravityAffectedObject(this);
-                        Direction.Value = Direction.NORTH;
-                        Acceleration = 2f;
+                        State = PlayerState.JUMPING;
                     }
-                    else
-                    {
-                        if (State == PlayerState.JUMPING)
-                        {
-                            Direction.SteerTowardsValue(Direction.NORTH);
-                        }
-                        else
-                        {
-                            CurrentGameArea.Gravity.AddGravityAffectedObject(this);
-                            Direction.Value = Direction.NORTH;
-                        }
-
-                        Acceleration += 1f;
-                    }
-
-                    State = PlayerState.JUMPING;
+                    Acceleration.Y -= MaximumVelocity.Y;
                 }
             }
         }
@@ -191,49 +158,26 @@ namespace TestLoop
         public void Move(GameTime gameTime)
         {
             // change speed
-            Velocity += Acceleration;
-            Acceleration = 0;
+            Velocity.X += Acceleration.X;
+            Velocity.Y += Acceleration.Y;
+            Acceleration.X = 0;
+            Acceleration.Y = 0;
 
             // apply friction         
 
             // Normalize values
-            if (Velocity > MaximumVelocity)
-                Velocity = MaximumVelocity;
-            if (Velocity < 0)
-                Velocity = 0;
+            if (Velocity.X > MaximumVelocity.X)
+                Velocity.X = MaximumVelocity.X;
+            if (Velocity.X < NegativeMaximumVelocity.X)
+                Velocity.X = NegativeMaximumVelocity.X;
+            if (Velocity.Y > MaximumVelocity.Y)
+                Velocity.Y = MaximumVelocity.Y;
+            if (Velocity.Y < NegativeMaximumVelocity.Y)
+                Velocity.Y = NegativeMaximumVelocity.Y;
 
             // Move
-            float XVelocityModifier = 0;
-            float YVelocityModifier = 0;
-
-            if (Direction.Value > 270)
-            {
-                YVelocityModifier = 360 - Direction.Value;
-                XVelocityModifier = 90 - YVelocityModifier;
-            }
-            else if (Direction.Value > 180)
-            {
-                XVelocityModifier = 270 - Direction.Value;
-                YVelocityModifier = (90 - XVelocityModifier);
-                XVelocityModifier *= -1;
-            }
-            else if (Direction.Value > 90)
-            {
-                YVelocityModifier = 180 - Direction.Value;
-                XVelocityModifier = (90 - YVelocityModifier) * -1;
-                YVelocityModifier *= -1;
-            }
-            else
-            {
-                YVelocityModifier = Direction.Value;
-                XVelocityModifier = 90 - YVelocityModifier;
-                YVelocityModifier *= -1;
-            }
-            XVelocityModifier = (XVelocityModifier / 90) * Velocity;
-            YVelocityModifier = (YVelocityModifier / 90) * Velocity;
-
-            X += XVelocityModifier;
-            Y += YVelocityModifier;
+            X += Velocity.X * CurrentGameArea.PixelsPerMeters;
+            Y += Velocity.Y * CurrentGameArea.PixelsPerMeters;
 
             // check for surface
             if (surface != null)
@@ -282,6 +226,8 @@ namespace TestLoop
                 {
                     // stopped by a surface
                     Stopped = true;
+                    State = PlayerState.FALLING;
+
                     Y = ((GameObject)collidedObject).PositionRectangle.Bottom;
                 }
             }

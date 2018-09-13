@@ -60,28 +60,11 @@ namespace TestLoop
 
                 float elapsedTime = (float)gameTime.TotalGameTime.Subtract(objectStartTimeFalling[mobileObj]).TotalSeconds;
 
-                mobileObj.Direction.SteerTowardsValue(GravityDirection.Value);
-
-                if (mobileObj.Direction.Value - GravityDirection.Value > 90 || mobileObj.Direction.Value - GravityDirection.Value < -90)
-                {
-                    mobileObj.Acceleration -= (AirDensity *
-                           GravitationalConstant *
-                           mobileObj.GravityAffectedFactor *
-                           elapsedTime *
-                           elapsedTime);
-
-                    if (mobileObj.Velocity == 0)
-                        mobileObj.Direction.Value = GravityDirection.Value;
-                }
-                else
-                {
-                    mobileObj.Acceleration += (AirDensity *
-                           GravitationalConstant *
-                           mobileObj.GravityAffectedFactor *
-                           elapsedTime *
-                           elapsedTime);
-                }
-
+                mobileObj.Acceleration.Y += (AirDensity *
+                                           GravitationalConstant *
+                                           mobileObj.GravityAffectedFactor *
+                                           elapsedTime *
+                                           elapsedTime);
             }
         }
     }

@@ -25,6 +25,7 @@ namespace TestLoop
 
         // positioning 
         private Vector2 ScreenPosition = new Vector2();
+
         public float X
         {
             get { return ScreenPosition.X; }

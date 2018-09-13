@@ -9,27 +9,19 @@ namespace TestLoop
 {
     public interface IMobile
     {
-        Direction Direction // degrees
+        CVector2 Velocity
         {
             get;
         }
 
-        float Velocity
+        CVector2 MaximumVelocity
         {
             get;
-            set;
         }
 
-        float MaximumVelocity
+        CVector2 Acceleration
         {
             get;
-            set;
-        }
-
-        float Acceleration
-        {
-            get;
-            set;
         }
 
         bool Stopped

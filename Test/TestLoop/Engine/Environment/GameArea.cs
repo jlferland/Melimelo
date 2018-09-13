@@ -79,15 +79,15 @@ namespace TestLoop
         }
 
         public virtual void Update(GameTime gameTime)
-        {
-            // move objects
+        {           
+            // gravity
+            Gravity.Apply(gameTime);
+
+            // move objects / user input
             for (int i = activeObjects.Count - 1; i >= 0; i--)
             {
                 activeObjects[i].Update(gameTime);
             }
-            
-            // gravity
-            Gravity.Apply(gameTime);
 
             // handle collisions
             Collision.HandleCollisions();

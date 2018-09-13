@@ -20,7 +20,7 @@ namespace TestLoop
         public override void Initialize()
         {
             // change parameters before calling base.initialize
-            PixelsPerMeters = 10f;
+            PixelsPerMeters = 1f;
             MaxFramePerSecond = 60;
 
             // initialize parent obj

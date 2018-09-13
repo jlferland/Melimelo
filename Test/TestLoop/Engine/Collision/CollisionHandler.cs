@@ -46,15 +46,20 @@ namespace TestLoop
                         // scan all other objects to see if there is a collision with them
                         foreach (ICollidable objCollider in collidableObjects)
                         {
-                            if (objMover != objCollider && 
+                            if (objMover != objCollider &&
                                 objCollider.CurrentObjectRectangle.Intersects(objMover.CurrentObjectRectangle))
                             {
                                 // detect collision direction
                                 CollisionDirection direction = CollisionDirection.NONE;
 
-                                if (objMover.CurrentObjectRectangle.Bottom > objCollider.CurrentObjectRectangle.Y && objMover.CurrentObjectRectangle.Bottom < objCollider.CurrentObjectRectangle.Bottom)
+                                if (objMover.CurrentObjectRectangle.Bottom > objCollider.CurrentObjectRectangle.Y &&
+                                    objMover.CurrentObjectRectangle.Bottom < objCollider.CurrentObjectRectangle.Bottom)
                                 {
-                                    direction = CollisionDirection.TOP;
+                                    if (objMover.CurrentObjectRectangle.Right > objCollider.CurrentObjectRectangle.X ||
+                                        objMover.CurrentObjectRectangle.Left < objCollider.CurrentObjectRectangle.Right)
+                                    {
+                                        direction = CollisionDirection.TOP;
+                                    }
                                 }
                                 else if (objCollider.CurrentObjectRectangle.Bottom > objMover.CurrentObjectRectangle.Y)
                                 {
@@ -81,9 +86,6 @@ namespace TestLoop
         private void RefreshSector(ICollidable collidableObject)
         {
             GameObject gameObj = (GameObject)collidableObject;
-
-
-
         }
 
 
