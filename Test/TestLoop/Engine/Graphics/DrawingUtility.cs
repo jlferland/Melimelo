@@ -21,7 +21,7 @@ namespace TestLoop
                 Texture2D texture;
                 texture = new Texture2D(GraphicsUtility.CurrentGraphicsDevice, 1, 1);
                 texture.SetData(new Color[] { color });
-                textureId = GraphicsUtility.AddTexture(texture);
+                textureId = GraphicsUtility.AddTexture(color.ToString(), texture);
                 Dots.Add(color, textureId);
             }
 

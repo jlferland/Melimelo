@@ -70,7 +70,7 @@ namespace TestLoop
                 tiles.Add(new TiledTextureDescriptor(16, 16, 1));
                 tiles.Add(new TiledTextureDescriptor(32, 16, 0));
 
-                textureId = renderer.RenderTexture(tiles, Width, Height);
+                textureId = renderer.RenderTexture("tiletest " + Height.ToString() + " " + Width.ToString(), tiles, Width, Height);
 
                 GraphicsUtility.AddVisibleGameObjects(LayerIndex, this);
             }

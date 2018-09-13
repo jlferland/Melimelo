@@ -14,6 +14,8 @@ namespace TestLoop
         private static Game CurrentGame;
 
         public static List<Texture2D> TextureCollection = new List<Texture2D>();
+        public static List<String> TextureAssetName = new List<String>();
+
         public static List<Texture2D> CompositeTextureCollection = new List<Texture2D>();
 
         private static List<BackgroundInformation> backgroundCollection = new List<BackgroundInformation>();
@@ -28,16 +30,30 @@ namespace TestLoop
 
         public static int LoadTexture(string assetName)
         {
-            int retr = TextureCollection.Count();
-            TextureCollection.Add(CurrentGame.Content.Load<Texture2D>(assetName));
+            int retr = TextureAssetName.IndexOf(assetName);
+                        
+            if (retr == -1)
+            {
+                // we havent loaded the asset yet
+                retr = TextureCollection.Count();
+                TextureCollection.Add(CurrentGame.Content.Load<Texture2D>(assetName));
+                TextureAssetName.Add(assetName);
+            }
             return retr;
         }
 
-        public static int AddTexture(Texture2D asset)
+        public static int AddTexture(string assetName, Texture2D asset)
         {
-            int retr = TextureCollection.Count();
-            TextureCollection.Add(asset);
-            CompositeTextureCollection.Add(asset);
+            int retr = TextureAssetName.IndexOf(assetName);
+
+            if (retr == -1)
+            {
+                // we havent loaded the asset yet
+                retr = TextureCollection.Count();
+                TextureCollection.Add(asset);
+                CompositeTextureCollection.Add(asset);
+                TextureAssetName.Add(assetName);
+            }
             return retr;
         }
 

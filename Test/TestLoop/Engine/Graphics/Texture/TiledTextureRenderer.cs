@@ -49,7 +49,7 @@ namespace TestLoop
             }
         }
 
-        public int RenderTexture(List<TiledTextureDescriptor> textureDescriptors, int width, int height)
+        public int RenderTexture(string assetName, List<TiledTextureDescriptor> textureDescriptors, int width, int height)
         {
             int newTextureId = GraphicsUtility.TextureCollection.Count;
 
@@ -83,7 +83,7 @@ namespace TestLoop
 
             GraphicsUtility.CurrentGraphicsDevice.SetRenderTarget(null);
 
-            newTextureId = GraphicsUtility.AddTexture(renderTarget);
+            newTextureId = GraphicsUtility.AddTexture(assetName, renderTarget);
 
             return newTextureId;
         }
