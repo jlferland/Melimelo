@@ -26,7 +26,9 @@ namespace TestLoop
             // initialize parent obj
             base.Initialize();
 
-            // initialize custom items
+            Map a = new Map("Content\\XML\\tile_test.xml");
+
+           // initialize custom items
             player = new Player(this);
             tile = new Tile(this, 10, 100, 3, 2);
             tile2 = new Tile(this, 100, 80, 3, 2);

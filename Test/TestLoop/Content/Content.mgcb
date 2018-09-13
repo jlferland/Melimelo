@@ -37,3 +37,21 @@
 /processorParam:TextureFormat=Color
 /build:Sprites/Game Boy GBC - Mega Man I Dr Wilys Revenge - Ice Mans Stage.png
 
+#begin Xml/tile_test.xml
+/copy:Xml/tile_test.xml
+
+#begin Sprites/tilemap_roche4.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Sprites/tilemap_roche4.png
+
+#begin Xml/Roche.tsx
+/copy:Xml/Roche.tsx
+

@@ -6,3 +6,7 @@
 /Test/TestLoop/.vs/TestLoop/v15
 /Test/TestLoop/bin/DesktopGL/AnyCPU/Debug
 /Test/TestLoop/obj/Debug
+/Test/TestLoop/Content/bin/DesktopGL/Sprites/tilemap_roche4.xnb
+/Test/TestLoop/Content/bin/DesktopGL/Xml/Roche.tsx
+/Test/TestLoop/Content/bin/DesktopGL/Xml/tile_test.xml
+/Test/TestLoop/Content/obj/DesktopGL/Sprites/tilemap_roche4.mgcontent
