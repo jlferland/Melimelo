@@ -13,7 +13,22 @@ namespace TestLoop
         public float AirDensity { get; set; } = 0.5f;
         public Direction GravityDirection { get; } = new Direction();
 
-        public float PixelsPerMeters { get; set; } = 10;        
+        public float PixelsPerMeters { get; set; } = 10;
+        private float scale = 1;
+        public float Scale
+        {
+            get { return scale; }
+            set
+            {
+                if (scale <= 0)
+                    scale = 0.1f;
+
+                DeScaleAll();
+                scale = value;
+                ReScaleAll();
+            }
+        }
+
         private int maxFramePerSecond = 60;
         public int MaxFramePerSecond // impacts event clock to set new events triggers
         {
@@ -94,6 +109,24 @@ namespace TestLoop
 
             // register next update
             EventClock.AddGameEvent(new EventClock.GameEvent(Update), NextFrameTimeSpan);
+        }
+
+        public virtual void DeScaleAll()
+        {
+            // move objects / user input
+            foreach (GameObject obj in registeredObjects)
+            {
+                obj.DeScale();
+            }
+        }
+
+        public virtual void ReScaleAll()
+        {
+            // move objects / user input
+            foreach (GameObject obj in registeredObjects)
+            {
+                obj.ReScale();
+            }
         }
     }
 }

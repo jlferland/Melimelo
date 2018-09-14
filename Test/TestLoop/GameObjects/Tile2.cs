@@ -15,16 +15,27 @@ namespace TestLoop
         public float Friction { get; set; }
         public float Bounce { get; set; }
         public SurfaceTypes SurfaceType { get; set; }
+
         public int TileNumber { get; set; }
+        public string AssetName { get; set; }
+        public int TileWidth { get; set; }
+        public int TileHeight { get; set; }
 
         // sprite helper
         private SpriteSheetHandler spriteSheet;
 
-        public Tile2(GameArea currentGameArea, int x, int y, int tileNumber) : base(currentGameArea)
+        public Tile2(GameArea currentGameArea, int x, int y, int tileNumber, string assetName, int tilewidth, int tileheight) : base(currentGameArea)
         {
             X = x;
             Y = y;
+
+            Height = 32;
+            Width = 32;
+
             TileNumber = tileNumber;
+            AssetName = assetName;
+            TileWidth = tilewidth;
+            TileHeight = tileheight;
         }
 
         // public methods 
@@ -40,10 +51,6 @@ namespace TestLoop
             Visible = true;
             LayerIndex = 0;
 
-            // final tile size (individual tiles are 32*32)
-            Height = 32;
-            Width = 32;
-
             PositionRectangle = new Rectangle(Convert.ToInt32(X), Convert.ToInt32(Y), Width, Height);
 
             // Surface
@@ -56,20 +63,19 @@ namespace TestLoop
                 int tempTextureId = 0;
 
                 // texture related
-                assetName = "Sprites\\tilemap_roche4";
-                tempTextureId = GraphicsUtility.LoadTexture(assetName);
-                spriteSheet = new SpriteSheetHandler(tempTextureId, 0, 0, 0, 0, 32, 32);
-
-                // Tile helper 
-                TiledTextureRenderer renderer = new TiledTextureRenderer();
-                renderer.AddTextureId(spriteSheet);
-
-                List<TiledTextureDescriptor> tiles = new List<TiledTextureDescriptor>();
-                tiles.Add(new TiledTextureDescriptor(Width, Height, TileNumber));
-                textureId = renderer.RenderTexture("tiletest2 " + TileNumber.ToString(), tiles, Width, Height);
-
+                assetName = AssetName;
+                textureId = GraphicsUtility.LoadTexture(assetName);
+                spriteSheet = new SpriteSheetHandler(textureId, 0, 0, 0, 0, TileWidth, TileHeight);
                 GraphicsUtility.AddVisibleGameObjects(LayerIndex, this);
             }
+
+            spriteSheet.CurrentFrame = TileNumber;
+
+        }
+
+        public override Rectangle GetDrawingRectangle()
+        {
+            return spriteSheet.getCurrentFrameRectangle();
         }
 
         public override void Update(GameTime gameTime)

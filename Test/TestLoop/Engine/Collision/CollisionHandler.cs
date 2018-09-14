@@ -29,6 +29,18 @@ namespace TestLoop
             }
         }
 
+        public void RemoveCollidableObject(params ICollidable[] objects)
+        {
+            foreach (ICollidable obj in objects)
+            {
+                if (collidableObjects.Contains(obj))
+                {
+                    collidableObjects.Remove(obj);
+                    RefreshSector(obj);
+                }
+            }
+        }
+
         public void HandleCollisions()
         {
             // handle on screen collision

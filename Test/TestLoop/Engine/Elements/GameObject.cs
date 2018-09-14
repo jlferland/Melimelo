@@ -29,17 +29,22 @@ namespace TestLoop
         public float X
         {
             get { return ScreenPosition.X; }
-            set { ScreenPosition.X = value; PositionRectangle.X = Convert.ToInt32(value); }
+            set { ScreenPosition.X = value; positionRectangle.X = Convert.ToInt32(value); }
         }
         public float Y
         {
             get { return ScreenPosition.Y; }
-            set { ScreenPosition.Y = value; PositionRectangle.Y = Convert.ToInt32(value); }
+            set { ScreenPosition.Y = value; positionRectangle.Y = Convert.ToInt32(value); }
         }
 
         public Vector2 GameAreaPosition = new Vector2();
 
-        public Rectangle PositionRectangle = Rectangle.Empty;
+        public Rectangle positionRectangle = Rectangle.Empty;
+        public Rectangle PositionRectangle
+        {
+            get { return positionRectangle; }
+            set { positionRectangle = value; ReScale(); }
+        }
 
         // size related
         public int Width;
@@ -60,6 +65,22 @@ namespace TestLoop
         public virtual Rectangle GetDrawingRectangle()
         {
             return Rectangle.Empty;
+        }
+
+        public virtual void DeScale()
+        {
+            X = (X - CurrentGameArea.ViewportRectangle.X) / CurrentGameArea.Scale;
+            Y = (Y - CurrentGameArea.ViewportRectangle.Y) / CurrentGameArea.Scale;
+            positionRectangle.Width = Convert.ToInt32(Width / CurrentGameArea.Scale);
+            positionRectangle.Height = Convert.ToInt32(Height /CurrentGameArea.Scale);
+        }
+
+        public virtual void ReScale()
+        {
+            X = (X * CurrentGameArea.Scale) + CurrentGameArea.ViewportRectangle.X;
+            Y = (Y * CurrentGameArea.Scale) + CurrentGameArea.ViewportRectangle.Y;
+            positionRectangle.Width = Convert.ToInt32(CurrentGameArea.Scale * Width);
+            positionRectangle.Height = Convert.ToInt32(CurrentGameArea.Scale * Height);
         }
     }
 }

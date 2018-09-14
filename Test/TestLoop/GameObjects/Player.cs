@@ -68,7 +68,7 @@ namespace TestLoop
         public override void Initialize()
         {
             // set object state
-            SetInitialState();
+            SetInitialState();            
         }
 
         private void SetInitialState()
@@ -85,8 +85,6 @@ namespace TestLoop
             Height = 16;
             Width = 16;
 
-            PositionRectangle = new Rectangle(Convert.ToInt32(X), Convert.ToInt32(Y), Width, Height);
-
             Velocity.X = 0;
             Velocity.Y = 0;
             MaximumVelocity.X = 6f;
@@ -96,6 +94,8 @@ namespace TestLoop
             Acceleration.X = 0;
             Acceleration.Y = 0;
 
+            PositionRectangle = new Rectangle(Convert.ToInt32(X), Convert.ToInt32(Y), Width, Height);
+            
             Weight = 1;
             GravityAffectedFactor = 1;
             CurrentGameArea.Gravity.AddGravityAffectedObject(this);
@@ -126,6 +126,12 @@ namespace TestLoop
             else if (kstate.IsKeyDown(Keys.D2))
                 spriteSheet.CurrentFrame++;
 
+            else if (kstate.IsKeyDown(Keys.OemMinus))
+                CurrentGameArea.Scale += 0.1f;
+            else if (kstate.IsKeyDown(Keys.OemPlus))
+                CurrentGameArea.Scale -= 0.1f;
+            
+
             if (kstate.IsKeyDown(Keys.LeftAlt))
                 SetInitialState();
 
@@ -139,8 +145,7 @@ namespace TestLoop
                 spriteSheet.CurrentFrame = 1;
                 Acceleration.X -= 0.2f;
             }
-
-
+            
             if (kstate.IsKeyDown(Keys.Space))
             {
                 if (State != PlayerState.FALLING)
@@ -152,7 +157,7 @@ namespace TestLoop
                     }
                     Acceleration.Y -= MaximumVelocity.Y;
                 }
-            }
+            }            
         }
 
         public void Move(GameTime gameTime)
@@ -231,6 +236,24 @@ namespace TestLoop
                     Y = ((GameObject)collidedObject).PositionRectangle.Bottom;
                 }
             }
+        }
+
+        public override void DeScale()
+        {
+            base.DeScale();
+            MaximumVelocity.X /=  CurrentGameArea.Scale;
+            MaximumVelocity.Y /=  CurrentGameArea.Scale;
+            NegativeMaximumVelocity.X /= CurrentGameArea.Scale;
+            NegativeMaximumVelocity.Y /= CurrentGameArea.Scale;
+        }
+
+        public override void ReScale()
+        {
+            base.ReScale();
+            MaximumVelocity.X *= CurrentGameArea.Scale;
+            MaximumVelocity.Y *= CurrentGameArea.Scale;
+            NegativeMaximumVelocity.X *= CurrentGameArea.Scale;
+            NegativeMaximumVelocity.Y *= CurrentGameArea.Scale;
         }
     }
 }

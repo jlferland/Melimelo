@@ -11,7 +11,16 @@ namespace TestLoop
     {
         public int Width { get; set; }
         public int Height { get; set; }
-        public Color Color { get; set; } = Color.CornflowerBlue;
+        private Color color = Color.CornflowerBlue;
+        public Color Color
+        {
+            get { return color; }
+            set
+            {
+                TextureId = DrawingUtility.GetColoredDotTextureId(value);
+                color = value;       
+            } 
+        } 
         public int TextureId { get; set; } = -1;
 
         public GameArea boundGameArea;

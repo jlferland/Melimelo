@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/JL/Source/Repos/Melimelo/Test/TestLoop/Content/Sprites/Game Boy GBC - Mega Man I Dr Wilys Revenge - Ice Mans Stage.png</SourceFile>
+  <SourceFile>C:/Users/JL/source/repos/Melimelo/Test/TestLoop/Content/Sprites/Game Boy GBC - Mega Man I Dr Wilys Revenge - Ice Mans Stage.png</SourceFile>
   <SourceTime>2018-08-29T15:34:13.5698093-04:00</SourceTime>
-  <DestFile>C:/Users/JL/Source/Repos/Melimelo/Test/TestLoop/Content/bin/DesktopGL/Sprites/Game Boy GBC - Mega Man I Dr Wilys Revenge - Ice Mans Stage.xnb</DestFile>
-  <DestTime>2018-09-12T23:37:03.0674401-04:00</DestTime>
+  <DestFile>C:/Users/JL/source/repos/Melimelo/Test/TestLoop/Content/bin/DesktopGL/Sprites/Game Boy GBC - Mega Man I Dr Wilys Revenge - Ice Mans Stage.xnb</DestFile>
+  <DestTime>2018-09-13T23:52:32.5962836-04:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T10:05:36-05:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

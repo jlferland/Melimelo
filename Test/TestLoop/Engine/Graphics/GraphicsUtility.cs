@@ -21,6 +21,7 @@ namespace TestLoop
         private static List<BackgroundInformation> backgroundCollection = new List<BackgroundInformation>();
         private static List<List<GameObject>> visibleGameObjects = new List<List<GameObject>>();
         private static List<Rectangle> bufferedGameAreaRectangles = new List<Rectangle>();
+        private static List<GameArea> bufferedGameAreas = new List<GameArea>();
 
         public static void Initialize(Game game)
         {
@@ -31,7 +32,7 @@ namespace TestLoop
         public static int LoadTexture(string assetName)
         {
             int retr = TextureAssetName.IndexOf(assetName);
-                        
+
             if (retr == -1)
             {
                 // we havent loaded the asset yet
@@ -71,7 +72,10 @@ namespace TestLoop
 
                 // those are the only allowed drawing locations
                 if (!bufferedGameAreaRectangles.Contains(back.boundGameArea.ViewportRectangle))
+                {
                     bufferedGameAreaRectangles.Add(back.boundGameArea.ViewportRectangle);
+                    bufferedGameAreas.Add(back.boundGameArea);
+                }
             }
 
             // draw objects
@@ -80,6 +84,7 @@ namespace TestLoop
                 foreach (GameObject obj in visibleGameObjects[i])
                 {
                     bool onScreen = false;
+                    GameArea area = null;
 
                     Rectangle clippingRectangle = obj.GetDrawingRectangle();
                     Rectangle positionRectangle = Rectangle.Empty;
@@ -90,6 +95,9 @@ namespace TestLoop
                         if (gameAreaRec.Intersects(obj.PositionRectangle))
                         {
                             onScreen = true;
+
+                            // keep gamearea
+                            area = bufferedGameAreas[bufferedGameAreaRectangles.IndexOf(gameAreaRec)];
 
                             // check if we need to clip 
                             // game ares edge clip
@@ -124,10 +132,21 @@ namespace TestLoop
                                 }
                             }
 
+                            // swap game area if applicable
+                            if (obj.CurrentGameArea != area)
+                            {
+                                area.Collision.AddCollidableObject((ICollidable)obj);
+                                area.Gravity.AddGravityAffectedObject((IMobile)obj);
+                                obj.CurrentGameArea.Collision.RemoveCollidableObject((ICollidable)obj);
+                                obj.CurrentGameArea.Gravity.RemoveGravityAffectedObject((IMobile)obj);
+
+                                obj.DeScale();
+                                obj.CurrentGameArea = area;
+                                obj.ReScale();
+                            }
+
                             // TODO : layer overlap clip
                         }
-                        else if (!onScreen)
-                            onScreen = gameAreaRec.Contains(obj.PositionRectangle);
                     }
 
                     // set visibility

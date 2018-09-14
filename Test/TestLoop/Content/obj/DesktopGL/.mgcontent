@@ -4,8 +4,8 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/JL/Source/Repos/Melimelo/Test/TestLoop/Content/Sprites/Game Boy GBC - Final Fantasy Adventure - Sumo.png</File>
-    <File>C:/Users/JL/Source/Repos/Melimelo/Test/TestLoop/Content/Sprites/Game Boy GBC - Mega Man I Dr Wilys Revenge - Ice Mans Stage.png</File>
-    <File>C:/Users/JL/Source/Repos/Melimelo/Test/TestLoop/Content/Sprites/tilemap_roche4.png</File>
+    <File>C:/Users/JL/source/repos/Melimelo/Test/TestLoop/Content/Sprites/Game Boy GBC - Final Fantasy Adventure - Sumo.png</File>
+    <File>C:/Users/JL/source/repos/Melimelo/Test/TestLoop/Content/Sprites/Game Boy GBC - Mega Man I Dr Wilys Revenge - Ice Mans Stage.png</File>
+    <File>C:/Users/JL/source/repos/Melimelo/Test/TestLoop/Content/Sprites/tilemap_roche4.png</File>
   </SourceFiles>
 </SourceFileCollection>

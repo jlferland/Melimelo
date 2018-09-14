@@ -25,13 +25,13 @@ namespace TestLoop
 
             while (true)
             {
-                if (currentColumn > imageWidth)
+                if (currentColumn >= imageWidth)
                 {
                     currentRow += height + offsetY + startOffsetY;
                     currentColumn = startOffsetX;
                 }
 
-                if (currentRow > imageHeight)
+                if (currentRow >= imageHeight)
                     break;
 
                 SpriteFrames.Add(new Rectangle(currentColumn, currentRow, width, height));
