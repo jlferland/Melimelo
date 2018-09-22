@@ -47,6 +47,7 @@
     <Compile Include="Engine\Elements\IZoneEffect.cs" />
     <Compile Include="Engine\Elements\SurfaceTypes.cs" />
     <Compile Include="Engine\Environment\BackgroundInformation.cs" />
+    <Compile Include="Engine\Environment\GameAreaEdgeBehavior.cs" />
     <Compile Include="Engine\Graphics\DrawingUtility.cs" />
     <Compile Include="Engine\Graphics\GraphicsUtility.cs" />
     <Compile Include="Engine\Graphics\Sprites\SpriteSheetHandler.cs" />

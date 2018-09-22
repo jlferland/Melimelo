@@ -100,7 +100,7 @@ namespace TestLoop
                             area = bufferedGameAreas[bufferedGameAreaRectangles.IndexOf(gameAreaRec)];
 
                             // check if we need to clip 
-                            // game ares edge clip
+                            // game area edge clip
                             Rectangle intersectRectangle = Rectangle.Intersect(gameAreaRec, obj.PositionRectangle);
 
                             if (intersectRectangle.Width != obj.PositionRectangle.Width ||
@@ -108,6 +108,11 @@ namespace TestLoop
                             {
                                 clippingRectangle = new Rectangle(obj.GetDrawingRectangle().Location, obj.GetDrawingRectangle().Size);
                                 positionRectangle = new Rectangle(obj.PositionRectangle.Location, obj.PositionRectangle.Size);
+
+                                if (clippingRectangle == Rectangle.Empty)
+                                {
+                                    clippingRectangle = new Rectangle(Point.Zero, positionRectangle.Size);
+                                }
 
                                 if (intersectRectangle.Width < obj.PositionRectangle.Width)
                                 {
@@ -133,12 +138,22 @@ namespace TestLoop
                             }
 
                             // swap game area if applicable
-                            if (obj.CurrentGameArea != area)
+                            if (typeof(IMobile).IsAssignableFrom(obj.GetType()) &&
+                                obj.CurrentGameArea != area && 
+                                obj.CurrentGameArea.EdgeBehaviorX == GameAreaEdgeBehavior.NONE && 
+                                obj.CurrentGameArea.EdgeBehaviorY == GameAreaEdgeBehavior.NONE)
                             {
-                                area.Collision.AddCollidableObject((ICollidable)obj);
-                                area.Gravity.AddGravityAffectedObject((IMobile)obj);
-                                obj.CurrentGameArea.Collision.RemoveCollidableObject((ICollidable)obj);
-                                obj.CurrentGameArea.Gravity.RemoveGravityAffectedObject((IMobile)obj);
+                                if (typeof(ICollidable).IsAssignableFrom(obj.GetType()))
+                                {
+                                    area.Collision.AddCollidableObject((ICollidable)obj);
+                                    obj.CurrentGameArea.Collision.RemoveCollidableObject((ICollidable)obj);
+                                }
+
+                                if (typeof(IMobile).IsAssignableFrom(obj.GetType()))
+                                {
+                                    area.Gravity.AddGravityAffectedObject((IMobile)obj);
+                                    obj.CurrentGameArea.Gravity.RemoveGravityAffectedObject((IMobile)obj);
+                                }
 
                                 obj.DeScale();
                                 obj.CurrentGameArea = area;
@@ -146,7 +161,12 @@ namespace TestLoop
                             }
 
                             // TODO : layer overlap clip
+
+                            // exit; no support for game objects on 2 game area simultaneously
+                            break;
                         }
+
+                        
                     }
 
                     // set visibility

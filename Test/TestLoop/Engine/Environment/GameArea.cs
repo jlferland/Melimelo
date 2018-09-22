@@ -33,12 +33,13 @@ namespace TestLoop
         public int MaxFramePerSecond // impacts event clock to set new events triggers
         {
             get { return maxFramePerSecond; }
-            set {
-                    maxFramePerSecond = value;
-                    NextFrameTimeSpan = new TimeSpan(0, 0, 0, 0, (int)(((float)1 / value) * 1000));
+            set
+            {
+                maxFramePerSecond = value;
+                NextFrameTimeSpan = new TimeSpan(0, 0, 0, 0, (int)(((float)1 / value) * 1000));
             }
         }
-        private TimeSpan NextFrameTimeSpan { get; set; } = new TimeSpan(0,0,0,0, (int)(((float)1 / 60) * 1000));
+        private TimeSpan NextFrameTimeSpan { get; set; } = new TimeSpan(0, 0, 0, 0, (int)(((float)1 / 60) * 1000));
 
         public GravityHandler Gravity { get; set; }
         public CollisionHandler Collision { get; set; }
@@ -52,9 +53,13 @@ namespace TestLoop
 
         public BackgroundInformation Background { get; }
 
+        public GameAreaEdgeBehavior EdgeBehaviorX { get; set; }
+        public GameAreaEdgeBehavior EdgeBehaviorY { get; set; }
+
         private List<GameObject> registeredObjects = new List<GameObject>();
         private List<GameObject> activeObjects = new List<GameObject>();
-        
+        private GameObject pinnedGameObject;
+
         public GameArea(int screenPositionX, int screenPositionY, int viewportWidth, int viewportHeight)
         {
             GravityDirection.Value = Direction.SOUTH;
@@ -94,18 +99,63 @@ namespace TestLoop
         }
 
         public virtual void Update(GameTime gameTime)
-        {           
-            // gravity
-            Gravity.Apply(gameTime);
+        {
+            // readjust objects according to viewport settings
+            int pinnedOffsetX = 0;
+            int pinnedOffsetY = 0;
+
+            if (pinnedGameObject != null)
+            {
+                int originalX = pinnedGameObject.PositionRectangle.X;
+                int originalY = pinnedGameObject.PositionRectangle.Y;
+
+                // gravity and update
+                Gravity.Apply(gameTime);
+                pinnedGameObject.Update(gameTime);
+
+                // calculate offset
+                pinnedOffsetX = (pinnedGameObject.PositionRectangle.X - originalX) * -1;
+                pinnedOffsetY = (pinnedGameObject.PositionRectangle.Y - originalY) * -1;
+
+                // put the object back to its original position
+                if (EdgeBehaviorX == GameAreaEdgeBehavior.EDGE_SCROLL)
+                    pinnedGameObject.X += pinnedOffsetX;
+                if (EdgeBehaviorY == GameAreaEdgeBehavior.EDGE_SCROLL)
+                    pinnedGameObject.Y += pinnedOffsetY;
+            }
+            else
+            {
+                // gravity
+                Gravity.Apply(gameTime);
+            }
 
             // move objects / user input
             for (int i = activeObjects.Count - 1; i >= 0; i--)
             {
-                activeObjects[i].Update(gameTime);
+                if (pinnedGameObject == null)
+                {
+                    activeObjects[i].Update(gameTime);
+                }
+                else if (pinnedGameObject != activeObjects[i])
+                {
+                    // if an object is pinned, don't process it
+                    activeObjects[i].Update(gameTime);
+
+                    if (EdgeBehaviorX == GameAreaEdgeBehavior.EDGE_SCROLL)
+                        activeObjects[i].X += pinnedOffsetX;
+                    if (EdgeBehaviorY == GameAreaEdgeBehavior.EDGE_SCROLL)
+                        activeObjects[i].Y += pinnedOffsetY;
+                }
+
+                // GameArea Edge processing 
+
             }
 
             // handle collisions
             Collision.HandleCollisions();
+            
+            // background processing 
+
 
             // register next update
             EventClock.AddGameEvent(new EventClock.GameEvent(Update), NextFrameTimeSpan);
@@ -127,6 +177,11 @@ namespace TestLoop
             {
                 obj.ReScale();
             }
+        }
+
+        public void PinViewportOnObject(GameObject objectToPin)
+        {
+            pinnedGameObject = objectToPin;
         }
     }
 }
