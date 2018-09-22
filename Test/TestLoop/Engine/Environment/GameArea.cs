@@ -49,16 +49,27 @@ namespace TestLoop
         public int Height { get; set; }
         public int ViewportWidth { get; set; }
         public int ViewportHeight { get; set; }
+        private int ViewportWidthOneHalf { get; set; }
+        private int ViewportHeightOneHalf { get; set; }
+        public int TotalWidth { get; private set; }
+        public int TotalHeight { get; private set; }
+
         public Rectangle ViewportRectangle { get; set; }
 
         public BackgroundInformation Background { get; }
 
         public GameAreaEdgeBehavior EdgeBehaviorX { get; set; }
         public GameAreaEdgeBehavior EdgeBehaviorY { get; set; }
+        public bool XScroll { get; set; }
+        public bool YScroll { get; set; }
 
         private List<GameObject> registeredObjects = new List<GameObject>();
         private List<GameObject> activeObjects = new List<GameObject>();
+
         private GameObject pinnedGameObject;
+        private bool pinnedGameObjectActive;
+        private int pinnedObjectAbsolutePositionX = 0;
+        private int pinnedObjectAbsolutePositionY = 0;
 
         public GameArea(int screenPositionX, int screenPositionY, int viewportWidth, int viewportHeight)
         {
@@ -67,6 +78,11 @@ namespace TestLoop
             ScreenPosition = new Vector2(screenPositionX, screenPositionY);
             ViewportHeight = viewportHeight;
             ViewportWidth = viewportWidth;
+            ViewportWidthOneHalf = ViewportWidth / 2;
+            ViewportHeightOneHalf = ViewportHeight / 2;
+            TotalWidth = ViewportWidth;
+            TotalHeight = ViewportHeight;
+
 
             Background = new BackgroundInformation(this);
             ViewportRectangle = new Rectangle(screenPositionX, screenPositionY, ViewportWidth, ViewportHeight);
@@ -86,6 +102,12 @@ namespace TestLoop
                 {
                     activeObjects.Add(newObject);
                 }
+
+                // Adjust total width and height
+                int newX = newObject.positionRectangle.X + newObject.Width;
+                int newY = newObject.positionRectangle.Y + newObject.Height;
+                if (TotalWidth < newX) TotalWidth = newX;
+                if (TotalWidth < newY) TotalHeight = newY;
             }
         }
 
@@ -104,7 +126,8 @@ namespace TestLoop
             int pinnedOffsetX = 0;
             int pinnedOffsetY = 0;
 
-            if (pinnedGameObject != null)
+            if (pinnedGameObjectActive && 
+                pinnedGameObject != null)
             {
                 int originalX = pinnedGameObject.PositionRectangle.X;
                 int originalY = pinnedGameObject.PositionRectangle.Y;
@@ -113,26 +136,58 @@ namespace TestLoop
                 Gravity.Apply(gameTime);
                 pinnedGameObject.Update(gameTime);
 
-                // calculate offset
-                pinnedOffsetX = (pinnedGameObject.PositionRectangle.X - originalX) * -1;
-                pinnedOffsetY = (pinnedGameObject.PositionRectangle.Y - originalY) * -1;
+                // check for unpinning
+                pinnedGameObjectActive = (XScroll && !((pinnedObjectAbsolutePositionX <= ViewportWidthOneHalf || pinnedObjectAbsolutePositionX + pinnedGameObject.Width >= TotalWidth - 100)));
 
+                // calculate offset
                 // put the object back to its original position
-                if (EdgeBehaviorX == GameAreaEdgeBehavior.EDGE_SCROLL)
+                if (XScroll)
+                {
+                    pinnedOffsetX = (pinnedGameObject.PositionRectangle.X - originalX) * -1;
+                    if (!pinnedGameObjectActive)
+                    {
+                        // adjust offset
+                    }
+
                     pinnedGameObject.X += pinnedOffsetX;
-                if (EdgeBehaviorY == GameAreaEdgeBehavior.EDGE_SCROLL)
+                    pinnedObjectAbsolutePositionX -= pinnedOffsetX;
+                }
+                if (YScroll)
+                { 
+                    pinnedOffsetY = (pinnedGameObject.PositionRectangle.Y - originalY) * -1;
+                    if (!pinnedGameObjectActive)
+                    {
+                        // adjust offset
+                    }
+
                     pinnedGameObject.Y += pinnedOffsetY;
+                    pinnedObjectAbsolutePositionY -= pinnedOffsetY;
+                }
             }
             else
             {
                 // gravity
                 Gravity.Apply(gameTime);
+
+                // check for pinning
+                if (pinnedGameObject != null)
+                {
+                    // check if we need to pin or unpin the player
+                    pinnedGameObjectActive = (XScroll && (pinnedGameObject.PositionRectangle.X > 100 && pinnedGameObject.PositionRectangle.X + pinnedGameObject.Width < 200));
+                    if (pinnedGameObjectActive)
+                    {
+                        if (pinnedObjectAbsolutePositionX == 0)
+                            pinnedObjectAbsolutePositionX = pinnedGameObject.PositionRectangle.X;
+                        if (pinnedObjectAbsolutePositionY == 0)
+                        pinnedObjectAbsolutePositionY = pinnedGameObject.PositionRectangle.Y;
+                    }
+                }
             }
 
             // move objects / user input
             for (int i = activeObjects.Count - 1; i >= 0; i--)
             {
-                if (pinnedGameObject == null)
+                if (pinnedGameObject == null || !pinnedGameObjectActive)
                 {
                     activeObjects[i].Update(gameTime);
                 }
@@ -141,9 +196,9 @@ namespace TestLoop
                     // if an object is pinned, don't process it
                     activeObjects[i].Update(gameTime);
 
-                    if (EdgeBehaviorX == GameAreaEdgeBehavior.EDGE_SCROLL)
+                    if (XScroll)
                         activeObjects[i].X += pinnedOffsetX;
-                    if (EdgeBehaviorY == GameAreaEdgeBehavior.EDGE_SCROLL)
+                    if (YScroll)
                         activeObjects[i].Y += pinnedOffsetY;
                 }
 
@@ -155,7 +210,6 @@ namespace TestLoop
             Collision.HandleCollisions();
             
             // background processing 
-
 
             // register next update
             EventClock.AddGameEvent(new EventClock.GameEvent(Update), NextFrameTimeSpan);
@@ -182,6 +236,17 @@ namespace TestLoop
         public void PinViewportOnObject(GameObject objectToPin)
         {
             pinnedGameObject = objectToPin;
+            pinnedObjectAbsolutePositionX = 0;
+            pinnedObjectAbsolutePositionY = 0;
+            pinnedGameObjectActive = false;
+        }
+
+        public void UnPinViewporObject()
+        {
+            pinnedGameObject = null;
+            pinnedObjectAbsolutePositionX = 0;
+            pinnedObjectAbsolutePositionY = 0;
+            pinnedGameObjectActive = false;
         }
     }
 }

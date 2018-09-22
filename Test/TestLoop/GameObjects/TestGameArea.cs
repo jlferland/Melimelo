@@ -19,11 +19,12 @@ namespace TestLoop
         }
 
         public override void Initialize()
-        {
+        { 
             // change parameters before calling base.initialize
             PixelsPerMeters = 1f;
             MaxFramePerSecond = 60;
-            EdgeBehaviorX = GameAreaEdgeBehavior.EDGE_SCROLL;
+            XScroll = true;
+            EdgeBehaviorX = GameAreaEdgeBehavior.EDGE_BLOCK;
 
             // initialize parent obj
             base.Initialize();
@@ -37,16 +38,13 @@ namespace TestLoop
 
             // register new objects to appropriate handlers
             AddGameObject(player, tile, tile2, tile3, tile4);
+
+            PinViewportOnObject(player);
         }
 
         public override void Update(GameTime gameTime)
         {
-            // check if we need to pin or unpin the player
-            if (player.PositionRectangle.X > this.ViewportRectangle.Width / 2)
-            {
-                PinViewportOnObject(player);
-            }
-            
+
             // base update
             base.Update(gameTime);
         }

@@ -9,10 +9,9 @@ namespace TestLoop
     public enum GameAreaEdgeBehavior
     {
         NONE = 0,
-        EDGE_SCROLL = 1,
+        EDGE_BLOCK = 1,
         EDGE_WARP = 2,
-        BLOCK = 3,
-        DEATH = 4
+        EDGE_DEATH = 3
 
     }
 }
